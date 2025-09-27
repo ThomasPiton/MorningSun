@@ -1,0 +1,21 @@
+Create an API wrapper for MorningStar that respects the following:
+
+- object oriented programming
+- log management
+- error management 
+- async call (hdien from user)
+- modular structure
+- respect SOLID principles
+- data validation 
+- add async method (the async shouldn't be visible by the user)
+- the function calll to get the data should only contain ticker.
+- each function has its own processing method: 
+
+Adjust the code below : 
+
+
+
+what is the best structure and structure ? 
+
+How handle different url ? endpoint ? 
+
