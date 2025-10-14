@@ -13,24 +13,24 @@
 
 ---
 
-## 🚀 Overview
+## Overview
 
 **MorningSun** is a lightweight yet powerful Python library designed to **simplify access to financial market data**.  
 It provides a unified interface to retrieve and manipulate:
 
-- 📈 **Stocks**
-- 💰 **ETFs**
-- 🏦 **Funds**
-- 🌍 **Indices**
-- 💹 **Market overviews**
-- 🗞️ **Financial news**
-- ⏱️ **Time series data**
+- **Stocks**
+- **ETFs**
+- **Funds**
+- **Indices**
+- **Market overviews**
+- **Financial news**
+- **Time series data**
 
 The goal is to make professional-grade data handling as intuitive as `yfinance`, while maintaining flexibility for analysts, developers, and researchers.
 
 ---
 
-## 📦 Installation
+## Installation
 
 Install directly from PyPI:
 
