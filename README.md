@@ -7,7 +7,8 @@
   <a href="https://ThomasPiton.github.io/MorningSun/"><img src="https://img.shields.io/badge/docs-online-brightgreen.svg" alt="Documentation" /></a>
   <!-- <a href="https://pypi.org/project/morningsun/"><img src="https://img.shields.io/pypi/v/morningsun" alt="PyPI version" /></a>
   <a href="https://github.com/ThomasPiton/MorningSun/actions"><img src="https://github.com/ThomasPiton/MorningSun/workflows/tests/badge.svg" alt="Build status" /></a> -->
-  <a href="https://github.com/ThomasPiton/MorningSun/blob/main/LICENSE"> <img src="https://img.shields.io/badge/docs-online-brightgreen.svg" alt="License" />
+  <a href="https://github.com/ThomasPiton/MorningSun/blob/main/LICENSE"> <img src="https://badgen.net/badge/license/MIT/green" alt="MIT License" />
+</a>
 </a>
 </p>
 
