@@ -1,4 +1,6 @@
+import asyncio
 from typing import Union, List
+
 import pandas as pd
 
 def get_timeseries_stock_realtime(id_sec: Union[str, List[str]]) -> pd.DataFrame:

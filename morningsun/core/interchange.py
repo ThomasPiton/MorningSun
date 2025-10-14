@@ -16,8 +16,7 @@ class DataFrameInterchange:
         self._df = data
 
     # --- Accès direct ---
-    @property
-    def dataframe(self) -> pd.DataFrame:
+    def to_pandas_dataframe(self) -> pd.DataFrame:
         """Retourne le DataFrame pandas sous-jacent."""
         return self._df
 

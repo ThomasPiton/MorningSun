@@ -1,66 +1,99 @@
-from typing import Union, List
-import pandas as pd
+import asyncio
 
-def get_stories_canada() -> pd.DataFrame:
+from morningsun.extractors.news import *
+from morningsun.core.interchange import DataFrameInterchange
+
+def get_stories_canada() -> DataFrameInterchange:
     """Get latest stories from Morningstar Canada."""
-    return StoriesCanadaExtractor().run()
+    extractor = StoriesCanadaExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_bond() -> pd.DataFrame:
+
+def get_news_canada_bond() -> DataFrameInterchange:
     """Get Morningstar Canada bond news."""
-    return NewsCanadaBondExtractor().run()
+    extractor = NewsCanadaBondExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_etf() -> pd.DataFrame:
+
+def get_news_canada_etf() -> DataFrameInterchange:
     """Get Morningstar Canada ETF news."""
-    return NewsCanadaEtfExtractor().run()
+    extractor = NewsCanadaEtfExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_fund() -> pd.DataFrame:
+
+def get_news_canada_fund() -> DataFrameInterchange:
     """Get Morningstar Canada fund news."""
-    return NewsCanadaFundExtractor().run()
+    extractor = NewsCanadaFundExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_stock() -> pd.DataFrame:
+
+def get_news_canada_stock() -> DataFrameInterchange:
     """Get Morningstar Canada stock news."""
-    return NewsCanadaStockExtractor().run()
+    extractor = NewsCanadaStockExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_market() -> pd.DataFrame:
+
+def get_news_canada_market() -> DataFrameInterchange:
     """Get Morningstar Canada market news."""
-    return NewsCanadaMarketExtractor().run()
+    extractor = NewsCanadaMarketExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_suistainable() -> pd.DataFrame:
+
+def get_news_canada_suistainable() -> DataFrameInterchange:
     """Get Morningstar Canada sustainable investing news."""
-    return NewsCanadaSuistainableExtractor().run()
+    extractor = NewsCanadaSuistainableExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_personal_finance() -> pd.DataFrame:
+
+def get_news_canada_personal_finance() -> DataFrameInterchange:
     """Get Morningstar Canada personal finance news."""
-    return NewsCanadaPersonalFinanceExtractor().run()
+    extractor = NewsCanadaPersonalFinanceExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_canada_economy() -> pd.DataFrame:
+
+def get_news_canada_economy() -> DataFrameInterchange:
     """Get Morningstar Canada economy news."""
-    return NewsCanadaEconomyExtractor().run()
+    extractor = NewsCanadaEconomyExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_us_alternative_investments() -> pd.DataFrame:
+
+def get_news_us_alternative_investments() -> DataFrameInterchange:
     """Get Morningstar US alternative investments news."""
-    return NewsUsAlternativeInvestmentsExtractor().run()
+    extractor = NewsUsAlternativeInvestmentsExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_us_financial_advisors() -> pd.DataFrame:
+
+def get_news_us_financial_advisors() -> DataFrameInterchange:
     """Get Morningstar US financial advisors news."""
-    return NewsUsFinancialAdvisorsExtractor().run()
+    extractor = NewsUsFinancialAdvisorsExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_us_retirements() -> pd.DataFrame:
+
+def get_news_us_retirements() -> DataFrameInterchange:
     """Get Morningstar US retirements news."""
-    return NewsUsRetirementsExtractor().run()
+    extractor = NewsUsRetirementsExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_us_portfolios() -> pd.DataFrame:
+
+def get_news_us_portfolios() -> DataFrameInterchange:
     """Get Morningstar US portfolios news."""
-    return NewsUsPortfoliosExtractor().run()
+    extractor = NewsUsPortfoliosExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_us_economy() -> pd.DataFrame:
+
+def get_news_us_economy() -> DataFrameInterchange:
     """Get Morningstar US economy news."""
-    return NewsUsEconomyExtractor().run()
+    extractor = NewsUsEconomyExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_us_sustainable_investing() -> pd.DataFrame:
+
+def get_news_us_sustainable_investing() -> DataFrameInterchange:
     """Get Morningstar US sustainable investing news."""
-    return NewsUsSustainableInvestingExtractor().run()
+    extractor = NewsUsSustainableInvestingExtractor().run()
+    return asyncio.run(extractor)
 
-def get_news_us_personal_finance() -> pd.DataFrame:
+
+def get_news_us_personal_finance() -> DataFrameInterchange:
     """Get Morningstar US personal finance news."""
-    return NewsUsPersonalFinanceExtractor().run()
+    extractor = NewsUsPersonalFinanceExtractor().run()
+    return asyncio.run(extractor)
