@@ -1,17 +1,14 @@
-<p align="center">
-  <img src="https://ThomasPiton.github.io/MorningSun/assets/logo.png" alt="MorningSun Logo" width="120" />
-</p>
-
-<h1 align="center">🌅 MorningSun</h1>
+<h1 align="center">MorningSun</h1>
 <p align="center">
   <em>A modern Python library for financial data — stocks, ETFs, funds, indices, markets, and news — inspired by the simplicity of <strong>yfinance</strong>.</em>
 </p>
 
 <p align="center">
   <a href="https://ThomasPiton.github.io/MorningSun/"><img src="https://img.shields.io/badge/docs-online-brightgreen.svg" alt="Documentation" /></a>
-  <a href="https://pypi.org/project/morningsun/"><img src="https://img.shields.io/pypi/v/morningsun" alt="PyPI version" /></a>
-  <a href="https://github.com/ThomasPiton/MorningSun/actions"><img src="https://github.com/ThomasPiton/MorningSun/workflows/tests/badge.svg" alt="Build status" /></a>
-  <a href="https://github.com/ThomasPiton/MorningSun/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ThomasPiton/MorningSun.svg" alt="License" /></a>
+  <!-- <a href="https://pypi.org/project/morningsun/"><img src="https://img.shields.io/pypi/v/morningsun" alt="PyPI version" /></a>
+  <a href="https://github.com/ThomasPiton/MorningSun/actions"><img src="https://github.com/ThomasPiton/MorningSun/workflows/tests/badge.svg" alt="Build status" /></a> -->
+  <a href="https://github.com/ThomasPiton/MorningSun/blob/main/LICENSE"> <img src="https://img.shields.io/github/license/ThomasPiton/MorningSun" alt="License" />
+</a>
 </p>
 
 ---
