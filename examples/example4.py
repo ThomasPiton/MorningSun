@@ -12,7 +12,7 @@ from morningsun.api.market import (
 def extract():
     # 1 
     dates = ["2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10"]
-    value = get_market_us_calendar_info(date=dates,info_type="economic-releases").to
+    value = get_market_us_calendar_info(date=dates,info_type="economic-releases").to_pandas_dataframe()
     
     # 2. 
     # value = get_market_commodities()
