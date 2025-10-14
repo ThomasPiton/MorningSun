@@ -1,0 +1,56 @@
+site_name: MyLibrary Documentation
+site_url: https://yourusername.github.io/my_library/
+repo_url: https://github.com/yourusername/my_library
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - content.code.annotate
+    - toc.integrate
+  palette:
+    - scheme: default
+      primary: blue
+      accent: light blue
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+  - mkdocs-jupyter:
+      execute: false   # Don't run notebooks automatically when building
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: installation.md
+      - Usage: usage.md
+  - API Reference:
+      - Stock: stock.md
+      - ETF: etf.md
+      - Fund: fund.md
+      - Index: index.md
+      - Market: market.md
+      - News: news.md
+      - Time Series: timeseries.md
+  - Examples:
+      - Stock Example: ../notebooks/stock_example.ipynb
+      - ETF Example: ../notebooks/etf_example.ipynb
+      - Fund Example: ../notebooks/fund_example.ipynb
+      - Index Example: ../notebooks/index_example.ipynb
+      - Market Example: ../notebooks/market_example.ipynb
+      - News Example: ../notebooks/news_example.ipynb
+      - TimeSeries Example: ../notebooks/timeseries_example.ipynb
