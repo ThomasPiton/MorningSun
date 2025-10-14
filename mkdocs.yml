@@ -1,5 +1,7 @@
 site_name: MorningSun Documentation
 repo_url: https://github.com/ThomasPiton/MorningSun
+site_description: Python library for extracting financial data from Morningstar
+site_author: Thomas Piton
 
 theme:
   name: material
@@ -29,7 +31,7 @@ plugins:
       execute: false
 
 nav:
-  - Home: home.md
+  - Home: index.md
   - Getting Started:
       - Installation: installation.md
       - Usage: usage.md
@@ -37,7 +39,6 @@ nav:
       - Stock: stock.md
       - ETF: etf.md
       - Fund: fund.md
-      - Index: index.md
       - Market: market.md
       - News: news.md
       - Time Series: timeseries.md
