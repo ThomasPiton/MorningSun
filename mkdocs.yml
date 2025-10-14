@@ -1,16 +1,12 @@
-site_name: MyLibrary Documentation
-site_url: https://yourusername.github.io/my_library/
-repo_url: https://github.com/yourusername/my_library
+site_name: MorningSun Documentation
+repo_url: https://github.com/yourusername/MorningSun
+
 theme:
   name: material
   features:
     - navigation.tabs
     - content.code.annotate
     - toc.integrate
-  palette:
-    - scheme: default
-      primary: blue
-      accent: light blue
 
 markdown_extensions:
   - admonition
@@ -21,7 +17,6 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight
   - pymdownx.inlinehilite
-  - pymdownx.snippets
 
 plugins:
   - search
@@ -31,10 +26,10 @@ plugins:
           options:
             show_source: true
   - mkdocs-jupyter:
-      execute: false   # Don't run notebooks automatically when building
+      execute: false
 
 nav:
-  - Home: index.md
+  - Home: home.md
   - Getting Started:
       - Installation: installation.md
       - Usage: usage.md
@@ -46,11 +41,14 @@ nav:
       - Market: market.md
       - News: news.md
       - Time Series: timeseries.md
+  - Data:
+      - Data Extraction: data_extraction.md
+      - Ticker: ticker.md
   - Examples:
-      - Stock Example: ../notebooks/stock_example.ipynb
-      - ETF Example: ../notebooks/etf_example.ipynb
-      - Fund Example: ../notebooks/fund_example.ipynb
-      - Index Example: ../notebooks/index_example.ipynb
-      - Market Example: ../notebooks/market_example.ipynb
-      - News Example: ../notebooks/news_example.ipynb
-      - TimeSeries Example: ../notebooks/timeseries_example.ipynb
+      - Stock Example: notebooks/stock_examples.ipynb
+      - ETF Example: notebooks/etf_examples.ipynb
+      - Fund Example: notebooks/fund_examples.ipynb
+      - Index Example: notebooks/index_examples.ipynb
+      - Market Example: notebooks/market_examples.ipynb
+      - News Example: notebooks/news_examples.ipynb
+      - TimeSeries Example: notebooks/timeseries_examples.ipynb

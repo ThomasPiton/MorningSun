@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="MorningSun",
+    name="morningsun",
     version="0.1.0",
-    author="Your Name",
+    author="Thomas Piton",
     author_email="your.email@example.com",
     description="MorningSun is a cool tool for grabbing financial data from Morningstar.",
     long_description=open('README.md').read(),
