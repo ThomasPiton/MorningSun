@@ -1,39 +1,78 @@
-<h1 align="center">MorningSun</h1>
-<p align="center">
-  <em>A modern Python library for financial data — stocks, ETFs, funds, indices, markets, and news — inspired by the simplicity of <strong>yfinance</strong>.</em>
-</p>
+# MorningSun
 
-<p align="center">
-  <a href="https://ThomasPiton.github.io/MorningSun/"><img src="https://img.shields.io/badge/docs-online-brightgreen.svg" alt="Documentation" /></a>
-  <!-- <a href="https://pypi.org/project/morningsun/"><img src="https://img.shields.io/pypi/v/morningsun" alt="PyPI version" /></a>
-  <a href="https://github.com/ThomasPiton/MorningSun/actions"><img src="https://github.com/ThomasPiton/MorningSun/workflows/tests/badge.svg" alt="Build status" /></a> -->
-  <a href="https://github.com/ThomasPiton/MorningSun/blob/main/LICENSE"> <img src="https://badgen.net/badge/license/MIT/green" alt="MIT License" />
-</a>
-</a>
-</p>
+*A modern Python library for financial data — stocks, ETFs, funds, indices, markets, and news.*
+
+[![PyPI](https://img.shields.io/pypi/v/morningsun.svg)](https://pypi.org/project/morningsun/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/morningsun.svg)](https://pypi.org/project/morningsun/)
+[![Build Status](https://github.com/ThomasPiton/MorningSun/actions/workflows/tests.yml/badge.svg)](https://github.com/ThomasPiton/MorningSun/actions)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ThomasPiton/MorningSun/blob/main/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://ThomasPiton.github.io/MorningSun/)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ---
 
 ## Overview
 
-**MorningSun** is a lightweight yet powerful Python library designed to **simplify access to financial market data**.  
-It provides a unified interface to retrieve and manipulate:
+**MorningSun** provides a Pythonic and intuitive interface to access financial and market data sourced from **Morningstar**.  
+It’s built for developers, analysts, and researchers who need fast, consistent, and transparent access to high-quality market information.
 
-- **Stocks**
-- **ETFs**
-- **Funds**
-- **Indices**
-- **Market overviews**
-- **Financial news**
-- **Time series data**
+MorningSun aims to make professional-grade data handling as simple as `yfinance`, while extending coverage to a wider range of financial instruments.
 
-The goal is to make professional-grade data handling as intuitive as `yfinance`, while maintaining flexibility for analysts, developers, and researchers.
+---
+
+## Features
+
+- Unified access to:
+  - Stocks  
+  - ETFs  
+  - Funds  
+  - Indices  
+  - Market overviews  
+  - Financial news  
+  - Historical and time series data  
+- Clean and modular architecture  
+- Pandas-compatible data structures  
+- Simple and consistent API  
+- Extensible design for new data endpoints  
 
 ---
 
 ## Installation
 
-Install directly from PyPI:
+Install MorningSun from PyPI:
 
 ```bash
 pip install morningsun
+```
+
+---
+
+## Disclaimer
+
+Morningstar and all related names and trademarks are the property of Morningstar, Inc.  
+**MorningSun** is an independent, open-source project not affiliated, endorsed, or vetted by Morningstar, Inc.
+
+This library uses publicly available data from Morningstar for **research and educational purposes only**.  
+You should review Morningstar’s [Terms of Use](https://www.morningstar.com/company/terms-of-use) for details on your rights to use the underlying data.
+
+> Morningstar’s data and website are intended for personal and non-commercial use only.
+
+---
+
+## Contributing
+
+Contributions are welcome.  
+You can:
+- Open an issue to report a bug or suggest an improvement  
+- Submit a pull request  
+- Contact us to discuss feature ideas  
+
+For larger changes, please reach out beforehand at **morningsun@gmail.com**.
+
+---
+
+## Links
+
+- [Documentation](https://ThomasPiton.github.io/MorningSun/)  
+- [Morningstar Official Site](https://www.morningstar.com/)  
+- [License (MIT)](https://github.com/ThomasPiton/MorningSun/blob/main/LICENSE)
