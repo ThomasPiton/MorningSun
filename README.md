@@ -40,17 +40,16 @@ Install MorningSun from PyPI:
 pip install morningsun
 ```
 
-<div align="left" style="border: 1px solid #ccc; padding: 1em; background-color: #f9f9f9; border-radius: 6px;">
+> ## ⚠️ Disclaimer  
+> 
+> Morningstar and all related names and trademarks are the property of Morningstar, Inc.  
+> **MorningSun** is an independent, open-source project not affiliated, endorsed, or vetted by Morningstar, Inc.  
+> 
+> This library uses publicly available data from Morningstar for **research and educational purposes only**.  
+> You should review Morningstar’s [Terms of Use](https://www.morningstar.com/company/terms-of-use) for details on your rights to use the underlying data.  
+> 
+> **Morningstar’s data and website are intended for personal and non-commercial use only.**
 
-<h3>⚠️ Disclaimer</h3>
-
-Morningstar and all related names and trademarks are the property of Morningstar, Inc.  
-**MorningSun** is an independent, open-source project not affiliated, endorsed, or vetted by Morningstar, Inc.
-
-This library uses publicly available data from Morningstar for **research and educational purposes only**.  
-You should review Morningstar’s [Terms of Use](https://www.morningstar.com/company/terms-of-use) for details on your rights to use the underlying data.
-
-> Morningstar’s data and website are intended for personal and non-commercial use only.
 
 </div>
 
