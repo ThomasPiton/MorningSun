@@ -1,0 +1,29 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Récupérer le code du repo
+      - uses: actions/checkout@v3
+
+      # 2️⃣ Installer Python
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # 3️⃣ Installer les dépendances
+      - run: pip install -r requirements.txt
+
+      # 4️⃣ Lancer les tests et générer la couverture
+      - run: pytest --cov=morningsun tests/ --cov-report=xml
+
+      # 5️⃣ Envoyer la couverture à Codecov
+      - uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # optionnel si public repo
+          files: ./coverage.xml
+          fail_ci_if_error: true
