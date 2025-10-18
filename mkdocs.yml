@@ -9,6 +9,12 @@ theme:
     - navigation.tabs
     - content.code.annotate
     - toc.integrate
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+  icon:
+    repo: fontawesome/brands/github
 
 markdown_extensions:
   - admonition
@@ -30,6 +36,14 @@ plugins:
   - mkdocs-jupyter:
       execute: false
 
+extra_css:
+  - assets/custom.css
+
+extra_javascript:
+  - https://code.jquery.com/jquery-3.7.1.min.js
+  - https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js
+  - assets/js/dynamic_table.js
+
 nav:
   - Home: index.md
   - Getting Started:
@@ -45,6 +59,7 @@ nav:
   - Data:
       - Data Extraction: data_extraction.md
       - Ticker: ticker.md
+      - Dynamic Data Table: data/dynamic_table.md
   - Examples:
       - Stock Example: notebooks/stock_examples.ipynb
       - ETF Example: notebooks/etf_examples.ipynb

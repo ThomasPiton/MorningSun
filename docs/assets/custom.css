@@ -1,0 +1,40 @@
+#csv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+  font-size: 0.85rem;
+}
+
+#csv-table th {
+  background-color: var(--md-default-bg-color);
+  color: var(--md-default-fg-color--light);
+  text-align: left;
+  padding: 6px;
+}
+
+#csv-table td {
+  padding: 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 3px 6px;
+  margin-left: 0.5em;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.dataTables_wrapper .dataTables_length select {
+  border-radius: 6px;
+  padding: 2px;
+}
+
+/* enable horizontal scroll for many columns */
+.dataTables_scrollBody {
+  overflow-x: auto !important;
+}

@@ -11,7 +11,7 @@
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Overview
-c
+
 **MorningSun** provides a Pythonic and intuitive interface to access financial and market data sourced from **Morningstar**.  
 It’s built for developers, analysts, and researchers who need fast, consistent, and transparent access to high-quality market information.
 
