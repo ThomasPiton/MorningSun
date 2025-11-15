@@ -4,7 +4,7 @@ from typing import Optional
 from morningpy.core.dataframe_schema import DataFrameSchema
 
 @dataclass
-class NewsSchema(DataFrameSchema):
+class HeadlineNewsSchema(DataFrameSchema):
     id: Optional[str] = None
     instrumentID: Optional[str] = None
     label: Optional[str] = None

@@ -28,9 +28,18 @@ from morningpy.api.ticker import (
     convert
 )
 
+from morningpy.api.news import (
+    get_headline_news
+)
+
 
 def extract():
     
+    df = get_headline_news(
+        market="Spain",
+        news="economy",
+        edition="Central Europe")
+    df
     # df = get_holding_info(
     #     performance_id=["0P0001PU03","0P0001BG3E","0P0001F9QM","0P000192KF"])    
     
