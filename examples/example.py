@@ -1,98 +1,109 @@
-"""
-website_url: https://www.morningstar.com/stocks/xnas/tsla/chart
-api_url: https://www.us-api.morningstar.com/QS-markets/chartservice/v2/timeseries
-=>
-Comments: to get timeseries data
-=>
-"""
+# Use absolute import from the package root
+from morningpy.api.market import (
+    get_market_us_calendar_info,
+    get_market_commodities,
+    get_market_currencies,
+    get_market_movers,
+    get_market_indexes,
+    get_market_fair_value,
+    get_market_info
+)
 
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-import requests
-from urllib.parse import unquote
-import pandas as pd
-import re
+from morningpy.api.timeseries import (
+    get_intraday_timeseries,
+    get_historical_timeseries
+)
 
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Get Cookies
+from morningpy.api.index import (get_index_description)
 
-URL = r'https://global.morningstar.com/fr/investissements/etf/0P0001U0G4/graphique'
-
-HEADERS = {
-    'Accept': '*/*',
-    "Content-Type": "application/json",
-    'Accept-Encoding': 'gzip, deflate, br, zstd',
-    'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-}
-
-# Récupération de la page HTML
-response = requests.get(URL, headers=HEADERS)
-msg = response.text
-
-# Regex pour capturer maasToken = "xxxxxx"
-match = re.search(r'maasToken\s*[:=]\s*"([^"]+)"', msg)
-
-if match:
-    token = match.group(1)
-    print("✅ maasToken trouvé:")
-    print(token)
-else:
-    print("❌ maasToken non trouvé dans le HTML brut")
-    # Petit debug : afficher un extrait pour vérifier
-    print(msg[:500])
-
-URL = r'https://www.us-api.morningstar.com/QS-markets/chartservice/v2/timeseries'
-
-HEADERS = {
-    "accept": "application/json, text/plain, */*",
-    "accept-encoding": "gzip, deflate, br, zstd",
-    "accept-language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
-    "authorization": f"Bearer {token}",
-    "cache-control": "no-cache",
-    "origin": "https://global.morningstar.com",
-    "pragma": "no-cache",
-    "priority": "u=1, i",
-    "referer": "https://global.morningstar.com/fr/investissements/etf/0P0001U0G4/graphique",
-    # "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
-    "sec-ch-ua-mobile": "?0",
-    # "sec-ch-ua-platform": "\"Windows\"",
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-site",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
-    # "x-api-requestid": "dc94dc2e-9938-430b-ac83-5c7197e7851f"
-}
+from morningpy.api.security import (
+    get_financial_statement,
+    get_holding,
+    get_holding_info
+)
 
 
-# PAYLOAD = {
-#     'query': 'F00000VYXH:totalReturn,nav,dividend',
-#     'frequency': 'd',
-#     'startDate':'2015-06-30',
-#     'endDate':'2025-09-26',
-#     'trackMarketData': '3.6.5',
-#     'instid': 'DOTCOM'
-# }
+def extract():
+    
+    # df = get_etf_holding_info(
+    #     performance_id=["0P0001PU03","0P0001BG3E","0P0001F9QM","0P000192KF"])    
+    
+    # df = get_etf_holding(
+    #     performance_id=[
+    #         "0P0001PU03",
+    #         "0P00013Z57",
+    #         # "0P0001F9QM",
+    #         # "0P000192KF"
+    #         ])    
+    
+    
+    df = get_financial_statement(
+        statement_type="Income Statement",
+        report_frequency="Quarterly",
+        security_id=["0P000115U4"])
+    
+    df
 
-PAYLOAD = {
-    'query': '0P00014L1G:open,high,low,close,volume,previousClose',
-    'frequency': 'd',
-    'startDate':'1900-01-01',
-    'endDate':'2025-09-26',
-    'trackMarketData': '3.6.5',
-    'instid': 'DOTCOM'
-}
+    
+    # df = get_index_description(
+    #     ticker=["MSCACADP","MSTAR","0000"],
+    #     id_security=["XIUSA000OA",'F00000T5UY','0P00012P9R']) #SP500
+    
+    # df = get_intraday_timeseries(
+    #     # ticker=["DIGIGR","EVLI","GRK"],
+    #     # isin=["US7181721090","CH1107979838","US29081P3038"],
+    #     # id_security=["0P0000BCG9","0P0000BZKB","0P0001BSGZ","0P0001BSG","0P0001BS6Z"],
+    #     id_security=["0P00009WL3"],
+    #     start_date="2020-11-08",
+    #     end_date="2025-11-07",
+    #     # start_date="2025-10-06",
+    #     # end_date="2025-11-05",
+    #     frequency="1min",
+    #     pre_after=False)
+    
+    # df = get_historical_timeseries(
+    #     # ticker=["DIGIGR","EVLI","GRK"],
+    #     # isin=["US7181721090","CH1107979838","US29081P3038"],
+    #     id_security=["0P0000OQN8","0P0001RWKZ"],
+    #     # id_security=["0P0000OQN8"],
+    #     start_date="2025-11-05",
+    #     end_date="2025-11-05",
+    #     frequency="daily",
+    #     pre_after=False
+    # )
+    
+    # 1 
+    # dates = ["2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10"]
+    # dates = ["2025-10-23"]
+    # df = get_market_us_calendar_info(date=dates,info_type="earnings").to_pandas_dataframe()
+    
+    # 2. 
+    # df = get_market_commodities()
 
-session = requests.Session()
+    #3. 
+    # df = get_market_currencies()
+    
+    # 4. 
+    # df = get_market_movers(mover_type=["gainers", "losers", "actives"])
+    
+    # 5.
+    # df = get_market_indexes(index_type=["americas","us"])
+    
+    # 6. 
+    # df = get_market_fair_value(value_type=["overvaluated","undervaluated"])
+    
+    #7. 
+    # df = get_market_info(info_type=["global_barometer","commodities"])
+    
+    # test Interchange
+    print(df.head())
+    # df.to_csv("1min_data.csv")
+    pl_df = df.to_polars_dataframe()
+    dask_df = df.to_dask_dataframe()
+    arrow_table = df.to_arrow_table()
+    
+    return df
 
-response = session.get(URL,params=PAYLOAD, headers=HEADERS)
-
-msg = response.json()
-
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Proceed Data
-
-data = msg[0]["series"]
-
-df = pd.DataFrame(data)
-
-df
+if __name__ == '__main__':
+    value = extract()
+    print(value)
