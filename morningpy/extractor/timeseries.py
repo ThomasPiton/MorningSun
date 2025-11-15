@@ -18,7 +18,8 @@ class IntradayTimeseriesExtractor(BaseExtractor):
     def __init__(self,
                  ticker: str = None,
                  isin: str = None,
-                 id_security: str = None,
+                 security_id: str = None,
+                 performance_id: str = None,
                  start_date: str = "1900-01-01",
                  end_date: str = "1900-01-01",
                  frequency: str = "5min",
@@ -41,10 +42,11 @@ class IntradayTimeseriesExtractor(BaseExtractor):
         self.numeric_columns = self.config.NUMERIC_COLUMNS
         self.final_columns = self.config.FINAL_COLUMNS
         
-        self.id_security = IdSecurityConverter(
+        self.security_id = IdSecurityConverter(
             ticker=ticker,
             isin=isin,
-            id_security=id_security
+            security_id=security_id,
+            performance_id=performance_id
         ).convert()
 
     def _check_inputs(self) -> None:
@@ -59,11 +61,11 @@ class IntradayTimeseriesExtractor(BaseExtractor):
             raise TypeError("Parameter 'pre_after' must be a boolean (True or False).")
         self.pre_after = "true" if self.pre_after else "false"
 
-        if not isinstance(self.id_security, (list, tuple)):
-            raise TypeError("id_security must be a list or tuple.")
-        if len(self.id_security) != 1:
+        if not isinstance(self.security_id, (list, tuple)):
+            raise TypeError("security_id must be a list or tuple.")
+        if len(self.security_id) != 1:
             raise ValueError("Exactly one security ID must be provided for intraday extraction.")
-        self.id_security = self.id_security[0]
+        self.security_id = self.security_id[0]
         
         try:
             self.start_dt = datetime.strptime(self.start_date, "%Y-%m-%d")
@@ -99,7 +101,7 @@ class IntradayTimeseriesExtractor(BaseExtractor):
         self.params = [
             {
                 **self.config.PARAMS,  # use fresh copy of base params
-                "query": f"{self.id_security}:open,high,low,close,volume,previousClose",
+                "query": f"{self.security_id}:open,high,low,close,volume,previousClose",
                 "frequency": self.mapping_frequency[self.frequency],
                 "preAfter": self.pre_after,
                 "startDate": chunk[0].strftime("%Y-%m-%d"),
@@ -154,7 +156,8 @@ class HistoricalTimeseriesExtractor(BaseExtractor):
     def __init__(self,
         ticker: Union[str, List[str]] = None,
         isin: Union[str, List[str]] = None,
-        id_security: Union[str, List[str]] = None,
+        security_id: Union[str, List[str]] = None,
+        performance_id:Union[str, List[str]] = None,
         start_date: str = "1900-01-01",
         end_date: str = "2025-11-07",
         frequency: str = "daily",
@@ -178,11 +181,11 @@ class HistoricalTimeseriesExtractor(BaseExtractor):
         self.numeric_columns = self.config.NUMERIC_COLUMNS
         self.final_columns = self.config.FINAL_COLUMNS
 
-        # Convert ticker/isin to internal ID
-        self.id_security = IdSecurityConverter(
+        self.security_id = IdSecurityConverter(
             ticker=ticker,
             isin=isin,
-            id_security=id_security
+            security_id=security_id,
+            performance_id=performance_id
         ).convert()
 
     def _check_inputs(self) -> None:
@@ -197,10 +200,10 @@ class HistoricalTimeseriesExtractor(BaseExtractor):
             raise TypeError("Parameter 'pre_after' must be a boolean (True or False).")
         self.pre_after = "true" if self.pre_after else "false"
 
-        if not isinstance(self.id_security, (list, tuple)):
-            raise TypeError("Parameter 'id_security' must be a list or tuple.")
+        if not isinstance(self.security_id, (list, tuple)):
+            raise TypeError("Parameter 'security_id' must be a list or tuple.")
 
-        if len(self.id_security) > 100:
+        if len(self.security_id) > 100:
             raise ValueError("A maximum of 100 securities can be requested for historical extraction.")
         
         try:
@@ -224,7 +227,7 @@ class HistoricalTimeseriesExtractor(BaseExtractor):
                 "preAfter":self.pre_after,
                 "startDate":self.start_date,
                 "endDate":self.end_date,
-            } for id in self.id_security]
+            } for id in self.security_id]
 
     def _process_response(self, response: dict) -> pd.DataFrame:
         """Process Morningstar Market Movers response based on selected mover_type."""
