@@ -14,40 +14,40 @@ from morningpy.api.timeseries import (
     get_historical_timeseries
 )
 
-from morningpy.api.index import (get_index_description)
-
 from morningpy.api.security import (
     get_financial_statement,
     get_holding,
     get_holding_info
 )
 
+from morningpy.api.ticker import (
+    get_all_etfs,
+    get_all_funds,
+    get_all_stocks,
+    get_all_securities,
+    convert
+)
+
 
 def extract():
     
-    # df = get_etf_holding_info(
+    # df = get_holding_info(
     #     performance_id=["0P0001PU03","0P0001BG3E","0P0001F9QM","0P000192KF"])    
     
-    # df = get_etf_holding(
+    # df = get_holding(
     #     performance_id=[
     #         "0P0001PU03",
     #         "0P00013Z57",
     #         # "0P0001F9QM",
     #         # "0P000192KF"
-    #         ])    
+    #         ])        
     
+    # df = get_financial_statement(
+    #     statement_type="Income Statement",
+    #     report_frequency="Quarterly",
+    #     security_id=["0P000115U4"])
     
-    df = get_financial_statement(
-        statement_type="Income Statement",
-        report_frequency="Quarterly",
-        security_id=["0P000115U4"])
-    
-    df
 
-    
-    # df = get_index_description(
-    #     ticker=["MSCACADP","MSTAR","0000"],
-    #     id_security=["XIUSA000OA",'F00000T5UY','0P00012P9R']) #SP500
     
     # df = get_intraday_timeseries(
     #     # ticker=["DIGIGR","EVLI","GRK"],
@@ -73,31 +73,19 @@ def extract():
     # )
     
     # 1 
-    # dates = ["2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10"]
-    # dates = ["2025-10-23"]
-    # df = get_market_us_calendar_info(date=dates,info_type="earnings").to_pandas_dataframe()
     
-    # 2. 
-    # df = get_market_commodities()
-
-    #3. 
-    # df = get_market_currencies()
-    
-    # 4. 
-    # df = get_market_movers(mover_type=["gainers", "losers", "actives"])
-    
-    # 5.
-    # df = get_market_indexes(index_type=["americas","us"])
-    
-    # 6. 
-    # df = get_market_fair_value(value_type=["overvaluated","undervaluated"])
-    
-    #7. 
-    # df = get_market_info(info_type=["global_barometer","commodities"])
+    dates = ["2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10"]
+    dates = ["2025-10-23"]
+    df = get_market_us_calendar_info(date=dates,info_type="earnings").to_pandas_dataframe()
+    df = get_market_commodities() 
+    df = get_market_currencies()
+    df = get_market_movers(mover_type=["gainers", "losers", "actives"])
+    df = get_market_indexes(index_type=["americas","us"])
+    df = get_market_fair_value(value_type=["overvaluated","undervaluated"])
+    df = get_market_info(info_type=["global_barometer","commodities"])
     
     # test Interchange
     print(df.head())
-    # df.to_csv("1min_data.csv")
     pl_df = df.to_polars_dataframe()
     dask_df = df.to_dask_dataframe()
     arrow_table = df.to_arrow_table()

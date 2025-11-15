@@ -5,9 +5,4 @@ from morningpy.core.dataframe_schema import DataFrameSchema
 
 @dataclass
 class TickerSchema(DataFrameSchema):
-    id: Optional[str] = None
-    instrumentID: Optional[str] = None
-    label: Optional[str] = None
-    name: Optional[str] = None
-    category: Optional[str] = None
-    bidPriceDecimals: Optional[int] = None
+    pass

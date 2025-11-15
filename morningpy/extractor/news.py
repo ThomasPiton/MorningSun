@@ -6,6 +6,102 @@ from morningpy.core.auth import AuthType
 from morningpy.core.base_extract import BaseExtractor
 from config import URLS,PARAMS
 
+class MarketMoversExtractor(BaseExtractor):
+    
+    config = MarketMoversConfig
+    schema = MarketMoversSchema
+    
+    def __init__(self, mover_type: Union[str, List[str]] = "gainers"):
+     
+        client = BaseClient(
+            auth_type=self.config.REQUIRED_AUTH,
+            url=self.config.PAGE_URL,
+        )
+
+        super().__init__(client)
+
+        self.mover_type = mover_type
+        self.url = self.config.API_URL
+        self.valid_inputs = self.config.VALID_INPUTS
+        self.rename_columns = self.config.RENAME_COLUMNS
+        self.str_columns = self.config.STRING_COLUMNS
+        self.numeric_columns = self.config.NUMERIC_COLUMNS
+        self.final_columns = self.config.FINAL_COLUMNS       
+
+    def _check_inputs(self) -> None:
+        """Ensure mover_type is valid and converted to a list."""
+        if isinstance(self.mover_type, str):
+            if self.mover_type not in self.valid_inputs:
+                raise ValueError(
+                    f"Invalid mover_type '{self.mover_type}', must be one of {self.valid_inputs}"
+                )
+            self.mover_type = [self.mover_type]
+        elif isinstance(self.mover_type, list):
+            invalid = [m for m in self.mover_type if m not in self.valid_inputs]
+            if invalid:
+                raise ValueError(
+                    f"Invalid mover_type(s) {invalid}, must be among {self.valid_inputs}"
+                )
+        else:
+            raise TypeError("mover_type must be a str or list[str]")
+
+    def _build_request(self) -> None:
+        pass
+
+    def _process_response(self, response: dict) -> pd.DataFrame:
+        """Process Morningstar Market Movers response based on selected mover_type."""
+        if not response:
+            return pd.DataFrame()
+
+        all_rows = []
+
+        for m_type in self.mover_type:
+            data = response.get(m_type, [])
+            if not data:
+                continue
+
+            rows = []
+            for item in data:
+                row = {}
+
+                for key, value_dict in item.items():
+                    if not isinstance(value_dict, dict) or "value" not in value_dict:
+                        continue
+                    
+                    if key not in row:
+                        row[key] = value_dict.get("value")
+
+                    props = value_dict.get("properties", {})
+                    for prop_key, prop_value in props.items():
+                        col_name = f"{key}_{prop_key}"
+                        if any(x in prop_key.lower() for x in ["date", "currency"]):
+                            continue
+                        if col_name not in row:  # avoid duplicates
+                            row[col_name] = prop_value.get("value")
+
+                rows.append(row)
+
+            df = pd.DataFrame(rows)
+            if df.empty:
+                continue
+
+            df["updated_on"] = response.get("updatedOn")
+            df["category"] = m_type
+            all_rows.append(df)
+
+        if not all_rows:
+            return pd.DataFrame()
+
+        df = pd.concat(all_rows, ignore_index=True)
+        
+        df.rename(columns=self.rename_columns, inplace=True)
+        df = df[self.final_columns]
+        df[self.str_columns] = df[self.str_columns].fillna("N/A") 
+        df[self.numeric_columns] = df[self.numeric_columns].fillna(0)
+        df = df.sort_values("percent_net_change", ascending=False).reset_index(drop=True)
+
+        return df
+
 class StoriesCanadaExtractor(BaseExtractor):
     REQUIRED_AUTH: AuthType = AuthType.NONE  
     PAGE_URL = "https://www.morningstar.ca/ca/news/stories.aspx" 
