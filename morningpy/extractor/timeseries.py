@@ -10,7 +10,25 @@ from morningpy.schema.timeseries import *
 
     
 class IntradayTimeseriesExtractor(BaseExtractor):
-    """Extracts intraday timeseries data for securities from Morningstar."""
+    """
+    Extracts intraday timeseries data for a single security from Morningstar.
+
+    This extractor handles:
+        - Validating inputs (dates, frequency, pre/post market flag)
+        - Building API requests (splitting date ranges into 18-business-day chunks)
+        - Processing API responses into a standardized pandas DataFrame
+
+    Attributes:
+        ticker (str | None): Ticker symbol of the security.
+        isin (str | None): ISIN code of the security.
+        security_id (str | None): Morningstar internal security ID.
+        performance_id (str | None): Morningstar performance ID.
+        start_date (str): Start date for extraction (YYYY-MM-DD).
+        end_date (str): End date for extraction (YYYY-MM-DD).
+        frequency (str): Frequency of intraday data (e.g., "5min").
+        pre_after (bool): Include pre/post-market data if True.
+        security_id (str): Converted single Morningstar security ID after validation.
+    """
 
     config = IntradayTimeseriesConfig
     schema = IntradayTimeseriesSchema
@@ -32,7 +50,6 @@ class IntradayTimeseriesExtractor(BaseExtractor):
         self.end_date = end_date
         self.frequency = frequency
         self.pre_after = pre_after
-
         self.url = self.config.API_URL
         self.params = self.config.PARAMS.copy()
         self.mapping_frequency = self.config.MAPPING_FREQUENCY
@@ -145,10 +162,31 @@ class IntradayTimeseriesExtractor(BaseExtractor):
         df.sort_values(by=["security_id", "date"], inplace=True, ignore_index=True)
         return df
         
-        
 
 class HistoricalTimeseriesExtractor(BaseExtractor):
-    """Extracts intraday timeseries data for securities from Morningstar."""
+    """
+    Extracts historical timeseries data for multiple securities from Morningstar.
+
+    This extractor handles:
+        - Validating inputs (dates, frequency, pre/post market flag, security limit)
+        - Building API requests per security
+        - Processing API responses into a standardized pandas DataFrame
+
+    Attributes:
+        ticker (str | List[str] | None): Ticker symbols of securities.
+        isin (str | List[str] | None): ISIN codes of securities.
+        security_id (str | List[str] | None): Morningstar internal security IDs.
+        performance_id (str | List[str] | None): Morningstar performance IDs.
+        start_date (str): Start date for extraction (YYYY-MM-DD).
+        end_date (str): End date for extraction (YYYY-MM-DD).
+        frequency (str): Frequency of historical data (e.g., "daily", "weekly").
+        pre_after (bool): Include pre/post-market data if True.
+        security_id (List[str]): Converted and validated list of Morningstar security IDs.
+    
+    Notes:
+        - Maximum of 100 securities per request is enforced.
+        - Dates are validated and must follow YYYY-MM-DD format.
+    """
 
     config = HistoricalTimeseriesConfig
     schema = HistoricalTimeseriesSchema
@@ -159,7 +197,7 @@ class HistoricalTimeseriesExtractor(BaseExtractor):
         security_id: Union[str, List[str]] = None,
         performance_id:Union[str, List[str]] = None,
         start_date: str = "1900-01-01",
-        end_date: str = "2025-11-07",
+        end_date: str = "2025-11-16",
         frequency: str = "daily",
         pre_after: bool = False):
 
@@ -170,8 +208,6 @@ class HistoricalTimeseriesExtractor(BaseExtractor):
         self.end_date = end_date
         self.frequency = frequency
         self.pre_after = pre_after
-
-        # Static configuration
         self.url = self.config.API_URL
         self.params = self.config.PARAMS.copy()
         self.mapping_frequency = self.config.MAPPING_FREQUENCY

@@ -1,7 +1,9 @@
 from morningpy.core.auth import AuthType
 
 class HeadlineNewsConfig:
+    
     REQUIRED_AUTH: AuthType = AuthType.BEARER_TOKEN
+    
     API_URL = "https://global.morningstar.com/api/v1"
     
     PARAMS = {
@@ -64,6 +66,7 @@ class HeadlineNewsConfig:
         "stocks":"sections/stocks",
         "markets":"sections/markets"
     }
+    
     FRENCH_ENDPOINT = {
         "economy":"sections/economie",
         "personal-finance":"sections/finances-personnelles",

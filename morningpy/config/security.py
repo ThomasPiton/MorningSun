@@ -1,9 +1,11 @@
 from morningpy.core.auth import AuthType
 
 class FinancialStatementConfig:
+    
     REQUIRED_AUTH: AuthType = AuthType.API_KEY
+    
     API_URL = "https://api-global.morningstar.com/sal-service/v1/stock/newfinancials/"
-    ENDPOINT = {"balanceSheet/detail"}
+
     PARAMS = {
         "dataType": "Q",
         "reportType": "A",
@@ -14,8 +16,17 @@ class FinancialStatementConfig:
         "component": "sal-equity-financials",
         "version": "4.69.0"
     }
-    VALID_FREQUENCY = {"Annualy","Quarterly"}
-    MAPPING_FREQUENCY = {"Annualy":"A","Quarterly":"Q"}
+    
+    VALID_FREQUENCY = {
+        "Annualy",
+        "Quarterly"
+    }
+    
+    MAPPING_FREQUENCY = {
+        "Annualy":"A",
+        "Quarterly":"Q"
+    }
+    
     ENDPOINT = {
         "Balance Sheet":"balanceSheet",
         "Cash Flow Statement":"cashFlow",
@@ -26,22 +37,14 @@ class FinancialStatementConfig:
         "Cash Flow Statement":"CashFlow",
         "Income Statement":"IncomeStatement"
     }
-    
-    RENAME_COLUMNS = {
-        "": "",
-    }
-    STRING_COLUMNS = [
 
-    ]
-    NUMERIC_COLUMNS = [
-
-    ]
-    FINAL_COLUMNS = STRING_COLUMNS + NUMERIC_COLUMNS
 
 class HoldingConfig:
     
     REQUIRED_AUTH: AuthType = AuthType.API_KEY
+    
     API_URL = "https://api-global.morningstar.com/sal-service/v1/etf/portfolio/holding/v2/"
+    
     PARAMS = {
         "premiumNum": 10000,
         "freeNum": 10000,
@@ -53,6 +56,7 @@ class HoldingConfig:
         "component": "sal-mip-holdings",
         "version": "4.69.0"
     }
+    
     RENAME_COLUMNS = {
         "securityName": "security_name",
         "secId": "security_id",
@@ -112,6 +116,7 @@ class HoldingConfig:
         "originalMarketValue": "original_market_value",
         "isMomentumFilterFlag": "is_momentum_filter_flag",
     }
+    
     STRING_COLUMNS = [
         "parent_security_id",
         "child_security_id",
@@ -156,6 +161,7 @@ class HoldingConfig:
         "currency_name",
         "is_momentum_filter_flag",
     ]
+    
     NUMERIC_COLUMNS = [
         "weighting",
         "number_of_share",
@@ -168,11 +174,16 @@ class HoldingConfig:
         "sus_esg_risk_globes",
         "original_market_value",
     ]
+    
     FINAL_COLUMNS = STRING_COLUMNS + NUMERIC_COLUMNS
 
+
 class HoldingInfoConfig:
+    
     REQUIRED_AUTH: AuthType = AuthType.API_KEY
+    
     API_URL = "https://api-global.morningstar.com/sal-service/v1/etf/portfolio/holding/v2/"
+    
     PARAMS = {
         "premiumNum": 10000,
         "freeNum": 1,
@@ -184,6 +195,7 @@ class HoldingInfoConfig:
         "component": "sal-mip-holdings",
         "version": "4.69.0"
     }
+    
     RENAME_COLUMNS = {
         "masterPortfolioId": "master_portfolio_id",
         "secId": "security_id",
@@ -210,6 +222,7 @@ class HoldingInfoConfig:
         "holdingSummary.lastTurnover": "last_turnover",
         "holdingSummary.LastTurnoverDate": "last_turnover_date",
     }
+    
     STRING_COLUMNS = [
         "security_id",
         "master_portfolio_id",
@@ -219,6 +232,7 @@ class HoldingInfoConfig:
         "asset_type",
         "portfolio_latest_date_footer",
     ]
+    
     NUMERIC_COLUMNS = [
         "number_of_holding",
         "number_of_equity_holding",
@@ -235,4 +249,6 @@ class HoldingInfoConfig:
         "number_of_bond_holding_percentage",
         "number_of_other_holding_percentage",
     ]
+    
     FINAL_COLUMNS = STRING_COLUMNS + NUMERIC_COLUMNS
+    
