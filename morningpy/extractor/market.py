@@ -8,7 +8,23 @@ from morningpy.config.market import *
 from morningpy.schema.market import *
 
 class MarketCalendarUsInfoExtractor(BaseExtractor):
-    
+    """
+    Extracts U.S. market calendar events (earnings, economic releases, IPOs, splits) from Morningstar.
+
+    This extractor handles:
+        - Input validation for info_type and date(s)
+        - Building API requests per date and event type
+        - Flattening the API response into a standardized pandas DataFrame
+
+    Attributes:
+        date (str | List[str]): The date(s) to query in "YYYY-MM-DD" format.
+        info_type (str): Type of calendar information ("earnings", "economic-releases", "ipos", "splits").
+        url (str): Base API URL for market calendar events.
+        params (dict | List[dict]): Request parameters for API calls.
+        valid_inputs (List[str]): List of allowed info_type values.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        final_columns (List[str]): Final column order for the DataFrame.
+    """
     config = MarketCalendarUsInfoConfig
     schema = MarketCalendarUsInfoSchema
 
@@ -67,7 +83,6 @@ class MarketCalendarUsInfoExtractor(BaseExtractor):
                 "info_type": info_type,
             }
 
-            # Case 1: EARNINGS
             if info_type == "earnings":
                 for sec in securities or [{}]:
                     row = {
@@ -79,7 +94,6 @@ class MarketCalendarUsInfoExtractor(BaseExtractor):
                         "market_cap": sec.get("marketCap"),
                         "isin": sec.get("isin"),
                         "exchange_country": sec.get("exchangeCountry"),
-                        # details
                         "quarter_end_date": details.get("quarterEndDate"),
                         "actual_diluted_eps": details.get("actualDilutedEps"),
                         "net_income": details.get("netIncome"),
@@ -89,7 +103,6 @@ class MarketCalendarUsInfoExtractor(BaseExtractor):
                     }
                     rows.append(row)
 
-            # Case 2: ECONOMIC RELEASES
             elif info_type == "economic-releases":
                 row = {
                     **base_info,
@@ -103,7 +116,6 @@ class MarketCalendarUsInfoExtractor(BaseExtractor):
                 }
                 rows.append(row)
 
-            # Case 3: IPOS
             elif info_type == "ipos":
                 for sec in securities or [{}]:
                     company = details.get("company", {})
@@ -126,7 +138,6 @@ class MarketCalendarUsInfoExtractor(BaseExtractor):
                     }
                     rows.append(row)
 
-            # Case 4: SPLITS
             elif info_type == "splits":
                 for sec in securities or [{}]:
                     company = details.get("company", {})
@@ -145,7 +156,6 @@ class MarketCalendarUsInfoExtractor(BaseExtractor):
                     }
                     rows.append(row)
 
-            # Default fallback
             else:
                 row = {**base_info, **details}
                 rows.append(row)
@@ -153,8 +163,24 @@ class MarketCalendarUsInfoExtractor(BaseExtractor):
         return pd.DataFrame(rows)
     
 class MarketFairValueExtractor(BaseExtractor):
-    """Extracts Morningstar fair value data for undervaluated or overvaluated stocks."""
+    """
+    Extracts Morningstar fair value information for stocks, including overvalued or undervalued categories.
 
+    This extractor handles:
+        - Input validation for value_type
+        - Flattening nested response payloads
+        - Producing a cleaned DataFrame with numeric and string columns handled appropriately
+
+    Attributes:
+        value_type (str | List[str]): Stock value categories to extract ("overvaluated", "undervalued").
+        url (str): Base API URL for fair value data.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        str_columns (List[str]): Columns treated as strings.
+        numeric_columns (List[str]): Columns treated as numeric.
+        final_columns (List[str]): Final column order for the DataFrame.
+        valid_inputs (List[str]): List of allowed value_type values.
+        mapping_inputs (dict): Mapping of value_type to API component keys.
+    """
     config = MarketFairValueConfig
     schema = MarketFairValueSchema
 
@@ -270,7 +296,24 @@ class MarketFairValueExtractor(BaseExtractor):
         return df
     
 class MarketIndexesExtractor(BaseExtractor):
-    
+    """
+    Extracts market index data from Morningstar.
+
+    This extractor handles:
+        - Input validation for index_type
+        - Flattening selected index components into a DataFrame
+        - Cleaning and sorting data for consistent output
+
+    Attributes:
+        index_type (str | List[str]): Type of market index to extract ("americas", "europe", etc.).
+        url (str): Base API URL for market indexes.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        str_columns (List[str]): Columns treated as strings.
+        numeric_columns (List[str]): Columns treated as numeric.
+        final_columns (List[str]): Final column order for the DataFrame.
+        valid_inputs (List[str]): List of allowed index_type values.
+        mapping_inputs (dict): Mapping of index_type to API component keys.
+    """
     config = MarketIndexesConfig
     schema = MarketIndexesSchema
 
@@ -342,7 +385,24 @@ class MarketIndexesExtractor(BaseExtractor):
         return df
 
 class MarketExtractor(BaseExtractor):
-    
+    """
+    Extracts general market data from Morningstar, such as commodities, currencies, or other info types.
+
+    This extractor handles:
+        - Input validation for info_type
+        - Flattening nested API response structures
+        - Creating a clean DataFrame with consistent columns and filled missing values
+
+    Attributes:
+        info_type (str | List[str]): Type of market data to extract ("commodities", "currencies", etc.).
+        url (str): Base API URL for market data.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        str_columns (List[str]): Columns treated as strings.
+        numeric_columns (List[str]): Columns treated as numeric.
+        final_columns (List[str]): Final column order for the DataFrame.
+        valid_inputs (List[str]): List of allowed info_type values.
+        mapping_inputs (dict): Mapping of info_type to API component keys.
+    """
     config = MarketConfig
     schema = MarketSchema
 
@@ -439,7 +499,23 @@ class MarketExtractor(BaseExtractor):
         return df
      
 class MarketMoversExtractor(BaseExtractor):
-    
+    """
+    Extracts market movers from Morningstar, including top gainers and losers.
+
+    This extractor handles:
+        - Input validation for mover_type
+        - Flattening nested properties in the API response
+        - Producing a cleaned, sorted DataFrame by net change percentage
+
+    Attributes:
+        mover_type (str | List[str]): Type of market movers ("gainers", "losers").
+        url (str): Base API URL for market movers.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        str_columns (List[str]): Columns treated as strings.
+        numeric_columns (List[str]): Columns treated as numeric.
+        final_columns (List[str]): Final column order for the DataFrame.
+        valid_inputs (List[str]): List of allowed mover_type values.
+    """
     config = MarketMoversConfig
     schema = MarketMoversSchema
     
@@ -535,7 +611,19 @@ class MarketMoversExtractor(BaseExtractor):
         return df
        
 class MarketCommoditiesExtractor(BaseExtractor):
-    
+    """
+    Extracts commodities market data from Morningstar.
+
+    This extractor handles:
+        - Flattening commodity data points
+        - Skipping date and currency fields when extracting properties
+        - Producing a clean DataFrame with relevant information for each commodity
+
+    Attributes:
+        url (str): Base API URL for commodities data.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        final_columns (List[str]): Final column order for the DataFrame.
+    """
     config = MarketCommoditiesConfig
     schema = MarketCommoditiesSchema
     
@@ -601,7 +689,19 @@ class MarketCommoditiesExtractor(BaseExtractor):
         return df
     
 class MarketCurrenciesExtractor(BaseExtractor):
+    """
+    Extracts currency market data from Morningstar.
 
+    This extractor handles:
+        - Flattening currency data points
+        - Skipping date and currency fields when extracting properties
+        - Producing a clean DataFrame with relevant information for each currency
+
+    Attributes:
+        url (str): Base API URL for currency data.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        final_columns (List[str]): Final column order for the DataFrame.
+    """
     config = MarketCurrenciesConfig
     schema = MarketCurrenciesSchema
     

@@ -9,7 +9,27 @@ from morningpy.config.security import *
 from morningpy.schema.security import *
     
 class FinancialStatementExtractor(BaseExtractor):
-    
+    """
+    Extracts financial statement data (income statement, balance sheet, cash flow) from Morningstar.
+
+    This extractor handles:
+        - Validating user inputs (tickers, ISINs, security IDs, statement type, report frequency)
+        - Building API requests per security and statement type
+        - Processing the API response into a standardized pandas DataFrame with normalized sub-levels
+
+    Attributes:
+        ticker (str | List[str] | None): Ticker symbols of securities.
+        isin (str | List[str] | None): ISIN codes of securities.
+        security_id (str | List[str] | None): Morningstar internal security IDs.
+        performance_id (str | List[str] | None): Morningstar performance IDs.
+        statement_type (str): Type of statement to extract ("income", "balance", "cashflow").
+        report_frequency (str): Report frequency ("annual", "quarterly", etc.).
+        security_id (List[str]): Converted and validated list of Morningstar security IDs.
+        url (str): Base API URL for financial statements.
+        endpoint (dict): Endpoint mapping per statement type.
+        valid_frequency (dict): Valid frequencies for reports.
+        frequency_mapping (dict): Mapping from user-friendly frequency to API frequency.
+    """
     config = FinancialStatementConfig
     schema = FinancialStatementSchema
     
@@ -34,7 +54,6 @@ class FinancialStatementExtractor(BaseExtractor):
         self.report_frequency = report_frequency 
         self.statement_type = statement_type
         self.filter_values = self.config.FILTER_VALUE
-        
         self.params = self.config.PARAMS
         self.rename_columns = self.config.RENAME_COLUMNS
         self.str_columns = self.config.STRING_COLUMNS
@@ -72,7 +91,7 @@ class FinancialStatementExtractor(BaseExtractor):
 
         def normalize_year_value(v):
             if v in (None, "_PO_"):
-                return 0  # YOUR REQUIREMENT: replace missing year with 0
+                return 0  
             if isinstance(v, (int, float)):
                 return v
             try:
@@ -131,7 +150,27 @@ class FinancialStatementExtractor(BaseExtractor):
     
 
 class HoldingExtractor(BaseExtractor):
-    
+    """
+    Extracts ETF or fund holdings data from Morningstar.
+
+    This extractor handles:
+        - Validating user inputs (tickers, ISINs, security IDs)
+        - Building API requests per security
+        - Processing ETF/fund holdings including equity, bond, and other holdings into a standardized pandas DataFrame
+
+    Attributes:
+        ticker (str | List[str] | None): Ticker symbols of securities.
+        isin (str | List[str] | None): ISIN codes of securities.
+        security_id (str | List[str] | None): Morningstar internal security IDs.
+        performance_id (str | List[str] | None): Morningstar performance IDs.
+        security_id (List[str]): Converted and validated list of Morningstar security IDs.
+        url (str): Base API URL for holdings.
+        params (dict): Request parameters for API calls.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        str_columns (List[str]): Columns to treat as strings.
+        numeric_columns (List[str]): Columns to treat as numeric.
+        final_columns (List[str]): Final column order for the DataFrame.
+    """
     config = HoldingConfig
     schema = HoldingSchema
     
@@ -260,7 +299,27 @@ class HoldingExtractor(BaseExtractor):
         return df
              
 class HoldingInfoExtractor(BaseExtractor):
-    
+    """
+    Extracts high-level metadata about ETF or fund holdings from Morningstar.
+
+    This extractor handles:
+        - Validating user inputs (tickers, ISINs, security IDs)
+        - Building API requests per security
+        - Processing holding info response into a single-row pandas DataFrame per security, including top holdings, turnover, and other portfolio statistics
+
+    Attributes:
+        ticker (str | List[str] | None): Ticker symbols of securities.
+        isin (str | List[str] | None): ISIN codes of securities.
+        security_id (str | List[str] | None): Morningstar internal security IDs.
+        performance_id (str | List[str] | None): Morningstar performance IDs.
+        security_id (List[str]): Converted and validated list of Morningstar security IDs.
+        url (str): Base API URL for holding info.
+        params (dict): Request parameters for API calls.
+        rename_columns (dict): Mapping of API column names to standardized names.
+        str_columns (List[str]): Columns to treat as strings.
+        numeric_columns (List[str]): Columns to treat as numeric.
+        final_columns (List[str]): Final column order for the DataFrame.
+    """
     config = HoldingInfoConfig
     schema = HoldingInfoSchema
     
@@ -301,7 +360,6 @@ class HoldingInfoExtractor(BaseExtractor):
         if not isinstance(response, dict) or not response:
             return pd.DataFrame()
 
-        # --- Extract top-level fields ---
         row = {
             "master_portfolio_id": response.get("masterPortfolioId"),
             "security_id": response.get("secId"),
@@ -324,7 +382,6 @@ class HoldingInfoExtractor(BaseExtractor):
             "number_of_other_holding_percentage": response.get("numberOfOtherHoldingPer"),
         }
 
-        # --- Extract nested fields ---
         holding_summary = response.get("holdingSummary", {}) or {}
         row["top_holding_weighting"] = holding_summary.get("topHoldingWeighting")
         row["last_turnover"] = holding_summary.get("lastTurnover")
@@ -333,21 +390,17 @@ class HoldingInfoExtractor(BaseExtractor):
             or holding_summary.get("lastTurnoverDate")
         )
 
-        # --- Create DataFrame ---
-        df = pd.DataFrame([row]).copy()  # Explicit copy → avoids SettingWithCopyWarning
+        df = pd.DataFrame([row]).copy() 
 
-        # --- Rename columns safely ---
         if hasattr(self, "rename_columns"):
             df.rename(columns=self.rename_columns, inplace=True, errors="ignore")
 
-        # --- Enforce expected columns order ---
         if hasattr(self, "final_columns"):
             missing_cols = [c for c in self.final_columns if c not in df.columns]
             for col in missing_cols:
                 df[col] = None
             df = df[self.final_columns]
 
-        # --- Handle NaN safely (future-proof for Pandas 3.0) ---
         if hasattr(self, "str_columns") and self.str_columns:
             df.loc[:, self.str_columns] = (
                 df[self.str_columns].fillna("N/A").infer_objects(copy=False)
