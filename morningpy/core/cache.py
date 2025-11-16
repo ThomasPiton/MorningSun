@@ -1,5 +1,4 @@
 import json
-import os
 from pathlib import Path
 from typing import Optional, Any, Dict
 
@@ -28,13 +27,12 @@ class Cache:
             Directory where the file will be stored. Defaults to the current package directory.
         """
         if base_dir is None:
-            base_dir = Path(__file__).parent
-
+            base_dir = Path(__file__).resolve().parent.parent.parent  # go up from morningpy/core
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
 
-        self.cache_path = self.base_dir / cache_filename
-        self._cache: Dict[str, Any] = self._load_cache()
+        self.cache_path = Path(cache_filename) if Path(cache_filename).is_absolute() else self.base_dir / cache_filename
+        self._cache: dict[str, Any] = self._load_cache()
 
     def _load_cache(self) -> Dict[str, Any]:
         """Load cache from disk. Return an empty dict on failure."""

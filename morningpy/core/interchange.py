@@ -20,6 +20,17 @@ class DataFrameInterchange(pd.DataFrame):
         """
         return DataFrameInterchange
     
+    def to_pandas_dataframe(self) -> pd.DataFrame:
+        """
+        Convert the current DataFrameInterchange instance to a pandas DataFrame.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame equivalent of the current DataFrame.
+        """
+        return pd.DataFrame(self)
+
     def to_polars_dataframe(self) -> pl.DataFrame:
         """
         Convert the current DataFrameInterchange instance to a Polars DataFrame.
@@ -107,3 +118,9 @@ class DataFrameInterchange(pd.DataFrame):
         """
         base_repr = super().__repr__()
         return f"<DataFrameInterchange: {len(self)} rows × {len(self.columns)} cols>\n{base_repr}"
+    
+    def _repr_html_(self):
+        """
+        HTML representation for Jupyter and IDE viewers.
+        """
+        return super()._repr_html_()
