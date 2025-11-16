@@ -11,12 +11,8 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 keywords = ["finance", "morningstar", "investing", "stocks", "ETF"]
 authors = [
-    { name = "Thomas Piton"}
+    { name = "Thomas Piton" }
 ]
-urls = {
-    "Homepage" = "https://github.com/ThomasPiton/morningpy",
-    "Repository" = "https://github.com/ThomasPiton/morningpy"
-}
 
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -25,16 +21,26 @@ classifiers = [
 ]
 
 dependencies = [
+    "aiohttp>=3.13",
+    "dask>=2023.0",
+    "modin>=0.37",
+    "pandas>=2.3",
+    "polars>=1.35",
+    "pyarrow>=12",
+    "requests>=2.32",
+    "selenium>=4.38"
 ]
+
+[project.urls]
+Homepage = "https://github.com/ThomasPiton/morningpy"
+Repository = "https://github.com/ThomasPiton/morningpy"
 
 [project.optional-dependencies]
-dev = [
-]
-docs = [
-]
+dev = []
+docs = []
 
 [tool.setuptools.packages.find]
-where = ["morningpy"]      # Root package folder
+where = ["morningpy"]
 include = ["morningpy*"]
 exclude = ["tests*"]
 
@@ -42,4 +48,4 @@ exclude = ["tests*"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-"morningpy" = ["data/*.parquet", "data/*.json"]
+morningpy = ["data/*.parquet", "data/*.json"]
