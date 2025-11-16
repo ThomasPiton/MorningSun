@@ -10,8 +10,6 @@
 [![Docs](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://ThomasPiton.github.io/morningpy/)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
----
-
 ## Overview
 
 **MorningPy** provides a Pythonic and intuitive interface to access financial and market data from **Morningstar.com**.  
@@ -25,13 +23,9 @@ MorningPy enables professional-grade data handling and covers a wide range of fi
 - News and Market Updates  
 - Ticker conversion  
 
----
-
 ## News
 
 - First version of MorningPy released — excited to start the journey! 🎉
-
----
 
 ## Installation
 
