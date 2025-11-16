@@ -23,5 +23,5 @@ class HistoricalTimeseriesSchema(DataFrameSchema):
     high: Optional[float] = None
     low: Optional[float] = None
     close: Optional[float] = None
-    volume: Optional[float] = None
     previous_close: Optional[float] = None
+    volume: Optional[float] = None
