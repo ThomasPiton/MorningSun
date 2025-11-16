@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import aiohttp
-import asyncio
 from typing import Any, List, Tuple, Dict, Optional, Union, Type
 import pandas as pd
 

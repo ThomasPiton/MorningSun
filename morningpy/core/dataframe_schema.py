@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import get_type_hints, Dict, Optional
 
-
 @dataclass
 class DataFrameSchema:
     """

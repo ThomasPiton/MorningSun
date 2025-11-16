@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime
 from typing import Any, Dict, List,Union
 
 from morningpy.core.security_convert import IdSecurityConverter
@@ -55,10 +54,6 @@ class FinancialStatementExtractor(BaseExtractor):
         self.statement_type = statement_type
         self.filter_values = self.config.FILTER_VALUE
         self.params = self.config.PARAMS
-        self.rename_columns = self.config.RENAME_COLUMNS
-        self.str_columns = self.config.STRING_COLUMNS
-        self.numeric_columns = self.config.NUMERIC_COLUMNS
-        self.final_columns = self.config.FINAL_COLUMNS
         
         self.security_id = IdSecurityConverter(
             ticker=ticker,

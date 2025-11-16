@@ -8,7 +8,7 @@ from morningpy.core.interchange import DataFrameInterchange
 def get_intraday_timeseries(
     ticker: str = None, 
     isin: str = None, 
-    id_security: str = None, 
+    security_id: str = None, 
     performance_id: str = None,
     start_date: str = None,
     end_date: str = None,
@@ -51,7 +51,7 @@ def get_intraday_timeseries(
     extractor = IntradayTimeseriesExtractor(
         ticker=ticker,
         isin=isin,
-        id_security=id_security,
+        security_id=security_id,
         performance_id=performance_id,
         start_date=start_date,
         end_date=end_date,
