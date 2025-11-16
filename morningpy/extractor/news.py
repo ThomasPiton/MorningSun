@@ -39,22 +39,7 @@ class HeadlineNewsExtractor(BaseExtractor):
         self.params["sectionFallBack"]=self.news
         
     def _process_response(self,response: dict) -> pd.DataFrame:
-        """
-        Process the response dict from Morningstar news API
-        and return a structured DataFrame.
 
-        Parameters
-        ----------
-        response : dict
-            The raw response dictionary containing news stories.
-
-        Returns
-        -------
-        pd.DataFrame
-            DataFrame with columns:
-            ['news_type', 'Country', 'display_date', 'title', 'subtitle', 'Tags', 'link', 'language']
-        """
-        
         def format_display_date(date_str: str) -> str:
             cleaned = date_str.replace("Z", "")
             try:
@@ -70,7 +55,6 @@ class HeadlineNewsExtractor(BaseExtractor):
         rows = []
 
         for story in stories:
-            news_type = response.get('page', {}).get('title', '')  # e.g. 'Economie'
             display_date = format_display_date(story.get('displayDate', ''))
             title = story.get('headline', {}).get('title', '')
             subtitle = story.get('headline', {}).get('subtitle', '')
@@ -79,7 +63,7 @@ class HeadlineNewsExtractor(BaseExtractor):
             language = story.get('language', '')
 
             rows.append({
-                'news_type': news_type,
+                'news': self.news,
                 'market': self.market,
                 'display_date': display_date,
                 'title': title,
