@@ -182,6 +182,7 @@ class MarketIndexesConfig:
     
     FINAL_COLUMNS = STRING_COLUMNS + NUMERIC_COLUMNS
 
+
 class MarketConfig:
     
     REQUIRED_AUTH: AuthType = AuthType.WAF_TOKEN
