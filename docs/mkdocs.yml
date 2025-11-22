@@ -1,3 +1,6 @@
+# -------------------------------
+# Site information
+# -------------------------------
 site_name: MorningPy Documentation
 site_description: "A Python wrapper for Morningstar data with a clean API."
 site_author: "Thomas Piton"
@@ -5,6 +8,15 @@ repo_name: "ThomasPiton/morningpy"
 repo_url: "https://github.com/ThomasPiton/morningpy"
 site_url: "https://ThomasPiton.github.io/morningpy/"
 
+# -------------------------------
+# Directory configuration
+# -------------------------------
+docs_dir: docs          # your markdown/notebook sources
+site_dir: site          # HTML output folder
+
+# -------------------------------
+# Theme
+# -------------------------------
 theme:
   name: material
   palette:
@@ -21,6 +33,9 @@ theme:
     - search.highlight
     - search.share
 
+# -------------------------------
+# Markdown extensions
+# -------------------------------
 markdown_extensions:
   - admonition
   - footnotes
@@ -35,6 +50,9 @@ markdown_extensions:
   - pymdownx.tasklist
   - pymdownx.snippets
 
+# -------------------------------
+# Plugins
+# -------------------------------
 plugins:
   - search
   - mkdocstrings:
@@ -44,14 +62,17 @@ plugins:
             docstring_style: google
             show_source: true
   - mkdocs-jupyter:
-      execute: false   # Allows embedding notebooks without execution
+      execute: false   # embed notebooks without execution
 
+# -------------------------------
+# Navigation
+# -------------------------------
 nav:
   - Home: index.md
 
   - User Guide:
-      - Installation: installation.md
-      - Quick Start: quickstart.md
+      - Installation: user_guide/installation.md
+      - Quick Start: user_guide/quickstart.md
       - Project Structure: user_guide/structure.md
       - Configuration: user_guide/config.md
 
@@ -69,10 +90,10 @@ nav:
       - Tickers: notebooks/tickers.ipynb
       - Timeseries: notebooks/timeseries.ipynb
 
-  - Linkedin Examples:
+  - LinkedIn Examples:
       - Financial Statement: examples/example_financial_statement.ipynb
       - Holding: examples/example_holding.ipynb
-      - Interchange Dataframe: examples/example_interchange_dataframe.ipynb
+      - Interchange DataFrame: examples/example_interchange_dataframe.ipynb
       - Market: examples/example_market.ipynb
       - News: examples/example_news.ipynb
       - Tickers: examples/example_tickers.ipynb
