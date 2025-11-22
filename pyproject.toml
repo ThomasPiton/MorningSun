@@ -3,46 +3,50 @@ requires = ["setuptools>=65.5.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "morningpy"                  
-version = "0.1.0"
+name = "morningpy"
+dynamic = ["version"]
+
 description = "A Python wrapper to fetch financial data from Morningstar"
 readme = "README.md"
 requires-python = ">=3.10"
+
 license = { text = "MIT" }
+
 keywords = ["finance", "morningstar", "investing", "stocks", "ETF"]
+
 authors = [
-    { name = "Thomas Piton" }
+  { name = "Thomas Piton" }
 ]
 
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
 ]
 
 dependencies = [
-    "aiohttp>=3.13",
-    "dask>=2023.0",
-    "modin>=0.37",
-    "pandas>=2.3",
-    "polars>=1.35",
-    "pyarrow>=12",
-    "requests>=2.32",
-    "selenium>=4.38"
+  "aiohttp>=3.13",
+  "dask>=2023.0",
+  "modin>=0.37",
+  "pandas>=2.3",
+  "polars>=1.35",
+  "pyarrow>=12",
+  "requests>=2.32",
+  "selenium>=4.38"
 ]
 
 [project.urls]
-Homepage = "https://github.com/ThomasPiton/morningpy"
-Repository = "https://github.com/ThomasPiton/morningpy"
+homepage = "https://github.com/ThomasPiton/morningpy"
+documentation = "https://github.com/ThomasPiton/morningpy"
+repository = "https://github.com/ThomasPiton/morningpy"
 
 [project.optional-dependencies]
 dev = []
 docs = []
 
 [tool.setuptools.packages.find]
-where = ["morningpy"]
-include = ["morningpy*"]
-exclude = ["tests*"]
+include = ["morningpy", "morningpy.*"]
+namespaces = false
 
 [tool.setuptools]
 include-package-data = true

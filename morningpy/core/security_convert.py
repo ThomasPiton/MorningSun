@@ -1,15 +1,16 @@
 import pandas as pd
 import warnings
 from typing import List, Union
+from pathlib import Path
 
-from morningpy.core.config import PATH_TICKERS
+from morningpy.core.config import TICKERS_FILE
 
 class IdSecurityConverter:
     """
     Convert various types of security identifiers (ticker, ISIN, security_id,
     performance_id) into standardized Morningstar ``security_id`` values.
 
-    This class loads a local mapping from ``PATH_TICKERS`` containing all known
+    This class loads a local mapping from ``TICKERS_FILE`` containing all known
     correspondences between identifier types and Morningstar internal IDs.
 
     Typical workflow:
@@ -44,8 +45,15 @@ class IdSecurityConverter:
         self.isin = self._normalize_input(isin)
         self.security_id = self._normalize_input(security_id)
         self.performance_id = self._normalize_input(performance_id)
-        self.mapping = pd.read_parquet(PATH_TICKERS)
+        self._load_tickers()        
 
+    def _load_tickers(self):
+        package_dir = Path(__file__).resolve().parent.parent
+        self.data_dir = package_dir / "data"
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+        self.path_file = self.data_dir / TICKERS_FILE
+        self.mapping_tickers = pd.read_parquet(self.path_file)
+    
     @staticmethod
     def _normalize_input(value: Union[str, List[str], None]) -> List[str]:
         """
@@ -70,7 +78,7 @@ class IdSecurityConverter:
         if not values:
             return []
 
-        matches = self.mapping[self.mapping[column].isin(values)]
+        matches = self.mapping_tickers[self.mapping_tickers[column].isin(values)]
 
         duplicates = (
             matches.groupby(column)["security_id"]
@@ -102,7 +110,7 @@ class IdSecurityConverter:
         if invalid_format:
             warnings.warn(f"Invalid ID format detected: {sorted(invalid_format)}")
 
-        valid_in_mapping = self.mapping[self.mapping["security_id"].isin(valid_format)
+        valid_in_mapping = self.mapping_tickers[self.mapping_tickers["security_id"].isin(valid_format)
         ]["security_id"].unique().tolist()
 
         missing = set(valid_format) - set(valid_in_mapping)

@@ -1,0 +1,75 @@
+site_name: MorningPy Documentation
+site_description: "A Python wrapper for Morningstar data with a clean API."
+site_author: "Thomas Piton"
+repo_name: "ThomasPiton/morningpy"
+repo_url: "https://github.com/ThomasPiton/morningpy"
+site_url: "https://ThomasPiton.github.io/morningpy/"
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: amber
+  features:
+    - navigation.tabs
+    - navigation.expand
+    - navigation.indexes
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - search.share
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - toc:
+      permalink: true
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.magiclink
+  - pymdownx.tasklist
+  - pymdownx.snippets
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+  - mkdocs-jupyter:
+      execute: false   # Allows embedding notebooks without execution
+
+nav:
+  - Home: index.md
+
+  - User Guide:
+      - Installation: installation.md
+      - Quick Start: quickstart.md
+      - Project Structure: user_guide/structure.md
+      - Configuration: user_guide/config.md
+
+  - API Reference:
+      - Market: api/market.md
+      - News: api/news.md
+      - Financial Data: api/financial_data.md
+      - Tickers: api/tickers.md
+      - Timeseries: api/timeseries.md
+
+  - Notebook Examples:
+      - get_all_etfs: notebooks/get_all_etfs.ipynb
+      - get_all_funds: notebooks/get_all_funds.ipynb
+      - get_all_stocks: notebooks/get_all_stocks.ipynb
+      - get_all_securities: notebooks/get_all_securities.ipynb
+      - get_financial_statement: notebooks/get_financial_statement.ipynb
+
+
+
+  - Contribute: contributing.md
+  - Changelog: changelog.md

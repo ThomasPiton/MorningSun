@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from enum import Enum
 from typing import Dict, Optional, Any
+import brotli
 
 from .config import DEFAULT_HEADERS, URLS
 from .cache import Cache
@@ -104,17 +105,22 @@ class AuthManager:
         str
             The Morningstar API key.
         """
-        cached = self.cache.get("apikey")
 
+        cached = self.cache.get("apikey")
         if self._api_key and not force_refresh:
             return self._api_key
 
         url = URLS["key_api"]
+
         try:
-            response = self._fetch_url(url)
-            match = re.search(r'keyApigee\s*[:=]\s*"([^"]+)"', response.text)
+            resp = self._fetch_url(url)
+            content = resp.text
+            pattern = r'keyApigee\s*[:=]\s*["\']([^"\']+)["\']'
+            match = re.search(pattern, content)
             api_key = match.group(1) if match else ""
-        except Exception:
+
+        except Exception as e:
+            print(f"⚠️ Error while retrieving API key: {e}")
             api_key = ""
 
         if not api_key:
