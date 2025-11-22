@@ -30,9 +30,12 @@ from .api.timeseries import (
     get_intraday_timeseries,
 )
 
-from importlib.metadata import version
+try:
+    from importlib.metadata import version
+    __version__ = version("morningpy")
+except Exception:
+    __version__ = "0.0.0"  # fallback for dev/test environment
 
-__version__ = version("morningpy")
 
 __all__ = [
     "get_market_us_calendar_info",
