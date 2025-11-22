@@ -30,7 +30,7 @@ from .api.timeseries import (
     get_intraday_timeseries,
 )
 
-__version__ = "0.0.0"
+__version__ = "0.1.2"
 
 __all__ = [
     "get_market_us_calendar_info",
