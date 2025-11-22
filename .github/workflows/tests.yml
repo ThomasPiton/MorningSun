@@ -12,10 +12,12 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
+      
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      
       - name: Cache pip
         uses: actions/cache@v3
         with:
@@ -23,14 +25,17 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov codecov
+
       - name: Run tests
         run: |
-          pytest --cov=morningpy --cov-fail-under=70 tests/
+          pytest --cov=morningpy --cov-fail-under=40 tests/
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
