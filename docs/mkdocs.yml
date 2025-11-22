@@ -62,14 +62,21 @@ nav:
       - Tickers: api/tickers.md
       - Timeseries: api/timeseries.md
 
-  - Notebook Examples:
-      - get_all_etfs: notebooks/get_all_etfs.ipynb
-      - get_all_funds: notebooks/get_all_funds.ipynb
-      - get_all_stocks: notebooks/get_all_stocks.ipynb
-      - get_all_securities: notebooks/get_all_securities.ipynb
-      - get_financial_statement: notebooks/get_financial_statement.ipynb
+  - Basic Examples:
+      - Financial Data: notebooks/financial_data.ipynb
+      - Market: notebooks/market.ipynb
+      - News: notebooks/news.ipynb
+      - Tickers: notebooks/tickers.ipynb
+      - Timeseries: notebooks/timeseries.ipynb
 
-
+  - Linkedin Examples:
+      - Financial Statement: examples/example_financial_statement.ipynb
+      - Holding: examples/example_holding.ipynb
+      - Interchange Dataframe: examples/example_interchange_dataframe.ipynb
+      - Market: examples/example_market.ipynb
+      - News: examples/example_news.ipynb
+      - Tickers: examples/example_tickers.ipynb
+      - Timeseries: examples/example_timeseries.ipynb
 
   - Contribute: contributing.md
   - Changelog: changelog.md
