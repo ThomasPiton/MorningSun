@@ -15,23 +15,14 @@ class Cache:
     - Explicit methods for get/set/clear.
     """
 
-    def __init__(self, cache_filename: str = "data/cache.json", base_dir: Optional[str] = None):
+    def __init__(self, cache_filename: str = "cache.json"):
         """
-        Initialize the cache.
-
-        Parameters
-        ----------
-        cache_filename : str
-            Name of the JSON file to store data.
-        base_dir : Optional[str]
-            Directory where the file will be stored. Defaults to the current package directory.
+        Initialize the cache inside the morningpy/data/ folder.
         """
-        if base_dir is None:
-            base_dir = Path(__file__).resolve().parent.parent.parent  # go up from morningpy/core
-        self.base_dir = Path(base_dir)
-        self.base_dir.mkdir(parents=True, exist_ok=True)
-
-        self.cache_path = Path(cache_filename) if Path(cache_filename).is_absolute() else self.base_dir / cache_filename
+        package_dir = Path(__file__).resolve().parent.parent
+        self.data_dir = package_dir / "data"
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+        self.cache_path = self.data_dir / cache_filename
         self._cache: dict[str, Any] = self._load_cache()
 
     def _load_cache(self) -> Dict[str, Any]:
