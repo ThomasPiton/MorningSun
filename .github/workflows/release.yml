@@ -39,7 +39,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          publish_dir: docs/site
 
   # -------------------------------------------------------------------------
   # 2) BUILD PACKAGE & UPLOAD TO TEST PYPI ON EVERY PUSH TO MAIN
