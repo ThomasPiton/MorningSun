@@ -27,10 +27,11 @@ jobs:
 
       - name: Install MkDocs + Dependencies
         run: |
+          pip install --upgrade pip
           pip install mkdocs mkdocs-material
 
       - name: Build Documentation
-        run: mkdocs build --clean
+        run: mkdocs build --clean -f docs/mkdocs.yml
 
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
@@ -59,6 +60,7 @@ jobs:
 
       - name: Install Build Tools
         run: |
+          pip install --upgrade pip
           pip install build twine
 
       - name: Build package
@@ -92,6 +94,7 @@ jobs:
 
       - name: Install Build Tools
         run: |
+          pip install --upgrade pip
           pip install build twine
 
       - name: Build package
