@@ -27,8 +27,9 @@ jobs:
 
       - name: Install MkDocs + Dependencies
         run: |
-          pip install --upgrade pip
-          pip install mkdocs mkdocs-material
+          python -m pip install --upgrade pip
+          # Install MkDocs, Material theme, mkdocstrings, and any other plugins used in mkdocs.yml
+          pip install mkdocs mkdocs-material mkdocstrings
 
       - name: Build Documentation
         run: mkdocs build --clean -f docs/mkdocs.yml
@@ -39,7 +40,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
-
 
   # -------------------------------------------------------------------------
   # 2) BUILD PACKAGE & UPLOAD TO TEST PYPI ON EVERY PUSH TO MAIN
@@ -60,7 +60,7 @@ jobs:
 
       - name: Install Build Tools
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install build twine
 
       - name: Build package
@@ -72,7 +72,6 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
-
 
   # -------------------------------------------------------------------------
   # 3) PUBLISH TO PYPI ONLY WHEN A RELEASE IS CREATED
@@ -94,7 +93,7 @@ jobs:
 
       - name: Install Build Tools
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install build twine
 
       - name: Build package
