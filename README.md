@@ -4,7 +4,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/morningpy.svg)](https://pypi.org/project/morningpy/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/morningpy.svg)](https://pypi.org/project/morningpy/)
-[![Tests](https://github.com/ThomasPiton/morningpy/actions/workflows/test.yml/badge.svg)](https://github.com/ThomasPiton/morningpy/actions)
+[![Tests](https://github.com/ThomasPiton/morningpy/actions/workflows/tests.yml/badge.svg)](https://github.com/ThomasPiton/morningpy/actions)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ThomasPiton/morningpy/blob/main/LICENSE)
 [![Docs](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://ThomasPiton.github.io/morningpy/)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
