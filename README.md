@@ -8,6 +8,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ThomasPiton/morningpy/blob/main/LICENSE)
 [![Docs](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://ThomasPiton.github.io/morningpy/)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Docs Build](https://github.com/ThomasPiton/morningpy/actions/workflows/release.yml/badge.svg?job=build_docs)](https://github.com/ThomasPiton/morningpy/actions/workflows/release.yml)
 
 ## Overview
 
