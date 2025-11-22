@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=65.5.0", "wheel"]
+requires = ["setuptools>=65.5.0", "wheel", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -39,10 +39,6 @@ dependencies = [
 homepage = "https://github.com/ThomasPiton/morningpy"
 documentation = "https://github.com/ThomasPiton/morningpy"
 repository = "https://github.com/ThomasPiton/morningpy"
-
-[project.optional-dependencies]
-dev = []
-docs = []
 
 [tool.setuptools.packages.find]
 include = ["morningpy", "morningpy.*"]
