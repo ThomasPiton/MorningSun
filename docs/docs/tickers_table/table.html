@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <table id="table"></table>
+    <script>
+    $.getJSON('data.json', function(data) {
+        $('#table').DataTable({
+            data: data,
+            columns: [{"data": "col1", "title": "Column 1"}, {"data": "col2", "title": "Column 2"}],
+            pageLength: 100
+        });
+    });
+    </script>
+</body>
+</html>

@@ -33,9 +33,9 @@ class FinancialStatementConfig:
         "Income Statement":"incomeStatement"
     }
     FILTER_VALUE = {
-        "Balance Sheet":"BalanceSheet",
-        "Cash Flow Statement":"CashFlow",
-        "Income Statement":"IncomeStatement"
+        "balance-sheet":"BalanceSheet",
+        "cash-flow":"CashFlow",
+        "income-statement":"IncomeStatement"
     }
 
 

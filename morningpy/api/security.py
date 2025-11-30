@@ -9,7 +9,7 @@ def get_financial_statement(
     isin: Union[str, List[str]] = None, 
     security_id: Union[str, List[str]] = None, 
     performance_id: Union[str, List[str]] = None, 
-    statement_type: Literal["Balance Sheet", "Cash Flow", "Income Statement"] = None,
+    statement_type: Literal["Balance Sheet", "Cash Flow Statement", "Income Statement"] = None,
     report_frequency: Literal["Annualy", "Quarterly"] = None
 ):
     """

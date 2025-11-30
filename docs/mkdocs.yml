@@ -99,5 +99,7 @@ nav:
       - Tickers: examples/example_tickers.ipynb
       - Timeseries: examples/example_timeseries.ipynb
 
+  - Ticker Table: tickers_table/index.md
+
   - Contribute: contributing.md
   - Changelog: changelog.md

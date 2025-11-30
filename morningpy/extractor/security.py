@@ -31,6 +31,7 @@ class FinancialStatementExtractor(BaseExtractor):
     """
     config = FinancialStatementConfig
     schema = FinancialStatementSchema
+    uses_id_security = True
     
     def __init__(
         self,
@@ -51,11 +52,15 @@ class FinancialStatementExtractor(BaseExtractor):
         self.valid_frequency = self.config.VALID_FREQUENCY
         self.frequency_mapping = self.config.MAPPING_FREQUENCY
         self.report_frequency = report_frequency 
-        self.statement_type = statement_type
         self.filter_values = self.config.FILTER_VALUE
         self.params = self.config.PARAMS
         
-        self.security_id = IdSecurityConverter(
+        if isinstance(statement_type, str):
+            self.statement_types = [statement_type]
+        else:
+            self.statement_types = list(statement_type)
+        
+        self.id_security_map = IdSecurityConverter(
             ticker=ticker,
             isin=isin,
             security_id=security_id,
@@ -67,7 +72,15 @@ class FinancialStatementExtractor(BaseExtractor):
 
     def _build_request(self) -> None:
         temp_url = self.url
-        self.url = [temp_url + f"{sec_id}/{self.endpoint[self.statement_type]}/detail" for sec_id in self.security_id]
+        
+        urls = []
+        for sec_id, _ in self.id_security_map.items():
+            for statement_type in self.statement_types:
+                endpoint = self.endpoint[statement_type]
+                urls.append(f"{temp_url}{sec_id}/{endpoint}/detail")
+
+        self.url = urls
+        
         self.params["dataType"] = self.frequency_mapping[self.report_frequency]
         
     def _process_response(self, response: dict) -> pd.DataFrame:
@@ -139,8 +152,11 @@ class FinancialStatementExtractor(BaseExtractor):
         df = df.rename(columns={"sub_type0": "statement_type"})
         subtype_cols = ["statement_type"] + [f"sub_type{i}" for i in range(1, max_depth)]
         df = df[subtype_cols + period_col]
-        df = df[df["statement_type"].isin([self.filter_values[self.statement_type]])]
+        statement_type = response["_meta"]["statementType"]
+        df = df[df["statement_type"].isin([self.filter_values[statement_type]])]
         df[period_col] = df[period_col]*10**6
+        df.insert(0, "id_security", response["_metadata"]["security_id"])
+        df.insert(1, "security_label", response["_metadata"]["security_label"])
         return df
     
 class HoldingExtractor(BaseExtractor):

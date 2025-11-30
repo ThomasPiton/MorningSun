@@ -1,9 +1,10 @@
 import pandas as pd
 import warnings
-from typing import List, Union
+from typing import List, Union,Dict
 from pathlib import Path
 
 from morningpy.core.config import TICKERS_FILE
+
 
 class IdSecurityConverter:
     """
@@ -45,6 +46,7 @@ class IdSecurityConverter:
         self.isin = self._normalize_input(isin)
         self.security_id = self._normalize_input(security_id)
         self.performance_id = self._normalize_input(performance_id)
+        self.id_security_map = {}
         self._load_tickers()        
 
     def _load_tickers(self):
@@ -121,6 +123,40 @@ class IdSecurityConverter:
             )
 
         return valid_format
+    
+    def _get_label_security(self, security_ids: List[str]) -> None:
+        """
+        Populate the id_label_map with security labels for the given security IDs.
+
+        Parameters
+        ----------
+        security_ids : List[str]
+            List of security IDs to get labels for.
+
+        Notes
+        -----
+        This method updates self.id_label_map as a side effect.
+        For IDs not found in the mapping, an empty string is used as the label.
+        """
+        if not security_ids:
+            return
+
+        # Get labels from mapping
+        matches = self.mapping_tickers[
+            self.mapping_tickers["security_id"].isin(security_ids)
+        ][["security_id", "security_label"]].drop_duplicates()
+
+        # Populate the mapping dictionary
+        for _, row in matches.iterrows():
+            sec_id = row["security_id"]
+            label = row.get("security_label", "")
+            self.id_security_map[sec_id] = label if pd.notna(label) else ""
+
+        # Add empty labels for IDs not found in mapping
+        found_ids = set(matches["security_id"])
+        for sec_id in security_ids:
+            if sec_id not in found_ids:
+                self.id_security_map[sec_id] = ""
 
     def convert(self) -> List[str]:
         """
@@ -149,4 +185,6 @@ class IdSecurityConverter:
         ids.update(self._lookup_ids(self.isin, "isin"))
         ids.update(self._lookup_ids(self.ticker, "ticker"))
 
-        return sorted(ids)
+        self._get_label_security(ids)
+        
+        return self.id_security_map
