@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import os
+import gzip
 
 # Configure these
 PARQUET_FILE = "morningpy/data/tickers.parquet"
@@ -10,8 +11,7 @@ OUTPUT_DIR = "docs/docs/tickers_table"
 df = pd.read_parquet(PARQUET_FILE)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Convert to JSON (compressed)
-import gzip
+# Convert to JSON (compressed with gzip)
 data = df.to_dict('records')
 json_path = os.path.join(OUTPUT_DIR, "data.json.gz")
 with gzip.open(json_path, 'wt', encoding='utf-8') as f:
@@ -29,6 +29,7 @@ html = f"""<!DOCTYPE html>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <style>
         body {{ font-family: Arial, sans-serif; padding: 20px; }}
         #table {{ width: 100% !important; }}
@@ -40,10 +41,10 @@ html = f"""<!DOCTYPE html>
     <script>
     $(document).ready(function() {{
         fetch('data.json.gz')
-            .then(response => response.blob())
-            .then(blob => blob.stream().pipeThrough(new DecompressionStream('gzip')))
-            .then(stream => new Response(stream).json())
-            .then(data => {{
+            .then(response => response.arrayBuffer())
+            .then(buffer => {{
+                const decompressed = pako.ungzip(new Uint8Array(buffer), {{ to: 'string' }});
+                const data = JSON.parse(decompressed);
                 $('#table').DataTable({{
                     data: data,
                     columns: {json.dumps(columns)},
@@ -85,4 +86,5 @@ with open(os.path.join(OUTPUT_DIR, "index.md"), 'w') as f:
 
 print(f"✓ Generated {len(df):,} rows × {len(df.columns)} columns")
 print(f"✓ Output: {OUTPUT_DIR}")
+print(f"✓ Compressed JSON: data.json.gz")
 print(f"✓ Columns: {', '.join(df.columns[:5])}...")
