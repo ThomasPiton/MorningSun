@@ -11,6 +11,17 @@ __pycache__/
 # C extensions
 *.so
 
+# Ignore CSV files
+*.csv
+
+# Ignore Excel files
+*.xls
+*.xlsx
+*.xlsm
+*.xlsb
+*.xltx
+*.xltm
+
 # Distribution / packaging
 .Python
 build/

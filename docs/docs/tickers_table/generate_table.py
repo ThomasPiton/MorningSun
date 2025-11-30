@@ -3,7 +3,7 @@ import json
 import os
 
 # Configure these
-PARQUET_FILE = "morning/data/tickers.parquet"
+PARQUET_FILE = "morningpy/data/tickers.parquet"
 OUTPUT_DIR = "docs/docs/tickers_table"
 
 # Read data
