@@ -10,10 +10,11 @@ OUTPUT_DIR = "docs/docs/tickers_table"
 df = pd.read_parquet(PARQUET_FILE)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Convert to JSON
+# Convert to JSON (compressed)
+import gzip
 data = df.to_dict('records')
-json_path = os.path.join(OUTPUT_DIR, "data.json")
-with open(json_path, 'w') as f:
+json_path = os.path.join(OUTPUT_DIR, "data.json.gz")
+with gzip.open(json_path, 'wt', encoding='utf-8') as f:
     json.dump(data, f)
 
 # Dynamically create columns from dataframe
@@ -38,14 +39,18 @@ html = f"""<!DOCTYPE html>
     <table id="table" class="display"></table>
     <script>
     $(document).ready(function() {{
-        $.getJSON('data.json', function(data) {{
-            $('#table').DataTable({{
-                data: data,
-                columns: {json.dumps(columns)},
-                pageLength: 50,
-                lengthMenu: [[25, 50, 100, 500], [25, 50, 100, 500]]
+        fetch('data.json.gz')
+            .then(response => response.blob())
+            .then(blob => blob.stream().pipeThrough(new DecompressionStream('gzip')))
+            .then(stream => new Response(stream).json())
+            .then(data => {{
+                $('#table').DataTable({{
+                    data: data,
+                    columns: {json.dumps(columns)},
+                    pageLength: 50,
+                    lengthMenu: [[25, 50, 100, 500], [25, 50, 100, 500]]
+                }});
             }});
-        }});
     }});
     </script>
 </body>
