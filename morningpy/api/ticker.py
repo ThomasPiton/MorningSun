@@ -59,7 +59,7 @@ def search_tickers(
     fund_alternative_style_box: Union[str,List[str]] = None,
     exact_match: TickerConfig.BooleanLitarel=False
 ) -> pd.DataFrame:
-    
+    """test"""
     filters = {k: v for k, v in locals().items()}
     
     return TickerExtractor(**filters).search_tickers()
