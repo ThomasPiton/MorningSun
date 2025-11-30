@@ -1857,7 +1857,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=68b0dc74">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=daf13420">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1888,7 +1888,7 @@ import os</div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=bd94900b">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7b2c214b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1907,11 +1907,11 @@ import os</div>
 </clipboard-copy>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Configure these</span>
-<span class="n">PARQUET_FILE</span> <span class="o">=</span> <span class="s2">"morning/data/tickers.parquet"</span>
+<span class="n">PARQUET_FILE</span> <span class="o">=</span> <span class="s2">"morningpy/data/tickers.parquet"</span>
 <span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="s2">"docs/docs/tickers_table"</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-2"># Configure these
-PARQUET_FILE = "morning/data/tickers.parquet"
+PARQUET_FILE = "morningpy/data/tickers.parquet"
 OUTPUT_DIR = "docs/docs/tickers_table"</div>
 </div>
 </div>
@@ -1919,7 +1919,7 @@ OUTPUT_DIR = "docs/docs/tickers_table"</div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c99dcaad">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a3896f5a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1950,7 +1950,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)</div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dd56287c">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ee0933a0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1968,16 +1968,18 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Convert to JSON</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Convert to JSON (compressed)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">'records'</span><span class="p">)</span>
-<span class="n">json_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="s2">"data.json"</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="n">json_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="s2">"data.json.gz"</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s1">'wt'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-4"># Convert to JSON
+<div class="clipboard-copy-txt" id="cell-4"># Convert to JSON (compressed)
+import gzip
 data = df.to_dict('records')
-json_path = os.path.join(OUTPUT_DIR, "data.json")
-with open(json_path, 'w') as f:
+json_path = os.path.join(OUTPUT_DIR, "data.json.gz")
+with gzip.open(json_path, 'wt', encoding='utf-8') as f:
     json.dump(data, f)</div>
 </div>
 </div>
@@ -1985,7 +1987,7 @@ with open(json_path, 'w') as f:
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=70c4518a">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=468b2afa">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -2014,7 +2016,7 @@ columns = [{"data": col, "title": col} for col in df.columns]</div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8c9c3a80">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1a9d30d7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -2051,14 +2053,18 @@ columns = [{"data": col, "title": col} for col in df.columns]</div>
 <span class="s2">    &lt;table id="table" class="display"&gt;&lt;/table&gt;</span>
 <span class="s2">    &lt;script&gt;</span>
 <span class="s2">    $(document).ready(function() </span><span class="se">{{</span>
-<span class="s2">        $.getJSON('data.json', function(data) </span><span class="se">{{</span>
-<span class="s2">            $('#table').DataTable(</span><span class="se">{{</span>
-<span class="s2">                data: data,</span>
-<span class="s2">                columns: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">,</span>
-<span class="s2">                pageLength: 50,</span>
-<span class="s2">                lengthMenu: [[25, 50, 100, 500], [25, 50, 100, 500]]</span>
+<span class="s2">        fetch('data.json.gz')</span>
+<span class="s2">            .then(response =&gt; response.blob())</span>
+<span class="s2">            .then(blob =&gt; blob.stream().pipeThrough(new DecompressionStream('gzip')))</span>
+<span class="s2">            .then(stream =&gt; new Response(stream).json())</span>
+<span class="s2">            .then(data =&gt; </span><span class="se">{{</span>
+<span class="s2">                $('#table').DataTable(</span><span class="se">{{</span>
+<span class="s2">                    data: data,</span>
+<span class="s2">                    columns: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">                    pageLength: 50,</span>
+<span class="s2">                    lengthMenu: [[25, 50, 100, 500], [25, 50, 100, 500]]</span>
+<span class="s2">                </span><span class="se">}}</span><span class="s2">);</span>
 <span class="s2">            </span><span class="se">}}</span><span class="s2">);</span>
-<span class="s2">        </span><span class="se">}}</span><span class="s2">);</span>
 <span class="s2">    </span><span class="se">}}</span><span class="s2">);</span>
 <span class="s2">    &lt;/script&gt;</span>
 <span class="s2">&lt;/body&gt;</span>
@@ -2085,14 +2091,18 @@ html = f"""<!DOCTYPE html>
 <table class="display" id="table"></table>
 <script>
     $(document).ready(function() {{
-        $.getJSON('data.json', function(data) {{
-            $('#table').DataTable({{
-                data: data,
-                columns: {json.dumps(columns)},
-                pageLength: 50,
-                lengthMenu: [[25, 50, 100, 500], [25, 50, 100, 500]]
+        fetch('data.json.gz')
+            .then(response => response.blob())
+            .then(blob => blob.stream().pipeThrough(new DecompressionStream('gzip')))
+            .then(stream => new Response(stream).json())
+            .then(data => {{
+                $('#table').DataTable({{
+                    data: data,
+                    columns: {json.dumps(columns)},
+                    pageLength: 50,
+                    lengthMenu: [[25, 50, 100, 500], [25, 50, 100, 500]]
+                }});
             }});
-        }});
     }});
     </script>
 </body>
@@ -2104,7 +2114,7 @@ html = f"""<!DOCTYPE html>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=122ec252">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5c2a731e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -2133,7 +2143,7 @@ html = f"""<!DOCTYPE html>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2d81490a">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3e2ec74f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -2196,7 +2206,7 @@ index = f"""# Ticker Table
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e0ea5652">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c265fdcc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -2225,7 +2235,7 @@ index = f"""# Ticker Table
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ab3daa37">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4ec50d87">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
