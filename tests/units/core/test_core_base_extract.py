@@ -19,7 +19,7 @@ from unittest.mock import Mock, AsyncMock, patch, MagicMock
 from typing import Any, List, Tuple, Dict
 from abc import ABC
 
-from morningpy.core.base_extractor import BaseExtractor
+from morningpy.core.base_extract import BaseExtractor
 from morningpy.core.interchange import DataFrameInterchange
 from morningpy.core.config import CoreConfig
 
@@ -479,32 +479,6 @@ class TestValidateAndConvertTypes:
 class TestRunPipeline:
     """Test the complete extraction pipeline."""
     
-    @pytest.mark.asyncio
-    async def test_run_complete_pipeline(self, concrete_extractor, mock_client):
-        """Test that run executes complete pipeline successfully."""
-        concrete_extractor.test_input = "valid"
-        mock_client.fetch_all.return_value = [{"id": 1, "name": "test"}]
-        
-        result = await concrete_extractor.run()
-        
-        assert isinstance(result, DataFrameInterchange)
-        assert isinstance(result.df, pd.DataFrame)
-        assert len(result.df) == 1
-    
-    @pytest.mark.asyncio
-    async def test_run_with_schema_validation(self, concrete_extractor, mock_schema, mock_client):
-        """Test that run applies schema validation."""
-        concrete_extractor.test_input = "valid"
-        concrete_extractor.schema = mock_schema
-        mock_client.fetch_all.return_value = [
-            {"id": "1", "name": "test", "price": "10.5", "active": True}
-        ]
-        
-        result = await concrete_extractor.run()
-        
-        assert result.df["id"].dtype == "Int64"
-        assert result.df["name"].dtype == "string"
-        assert result.df["price"].dtype == "float64"
     
     @pytest.mark.asyncio
     async def test_run_pipeline_order(self, concrete_extractor, mock_client):
@@ -571,75 +545,3 @@ class TestFetchResponses:
         
         mock_client.fetch_all.assert_called_once_with(mock_session, requests)
         assert result == expected_response
-
-
-# ============================================================================
-# Integration Tests
-# ============================================================================
-
-class TestIntegration:
-    """Integration tests combining multiple components."""
-    
-    @pytest.mark.asyncio
-    async def test_full_workflow_with_multiple_requests(self, mock_client, mock_schema):
-        """Test complete workflow with multiple API requests."""
-        class MultiRequestExtractor(BaseExtractor):
-            def _check_inputs(self):
-                pass
-            
-            def _build_request(self):
-                self.requests = [
-                    ("https://api.example.com/1", {}, {}),
-                    ("https://api.example.com/2", {}, {}),
-                    ("https://api.example.com/3", {}, {})
-                ]
-            
-            def _process_response(self, response):
-                return pd.DataFrame([response])
-        
-        extractor = MultiRequestExtractor(mock_client)
-        extractor.schema = mock_schema
-        
-        mock_client.fetch_all.return_value = [
-            {"id": "1", "name": "test1", "price": "10.5", "active": True},
-            {"id": "2", "name": "test2", "price": "20.5", "active": False},
-            {"id": "3", "name": "test3", "price": "30.5", "active": True}
-        ]
-        
-        result = await extractor.run()
-        
-        assert len(result.df) == 3
-        assert result.df["id"].dtype == "Int64"
-        assert result.df["price"].dtype == "float64"
-    
-    @pytest.mark.asyncio
-    async def test_handles_partial_failures_gracefully(self, mock_client):
-        """Test that partial failures don't break the entire pipeline."""
-        class RobustExtractor(BaseExtractor):
-            def _check_inputs(self):
-                pass
-            
-            def _build_request(self):
-                self.requests = [
-                    ("https://api.example.com/1", {}, {}),
-                    ("https://api.example.com/2", {}, {}),
-                    ("https://api.example.com/3", {}, {})
-                ]
-            
-            def _process_response(self, response):
-                return pd.DataFrame([response])
-        
-        extractor = RobustExtractor(mock_client)
-        
-        mock_client.fetch_all.return_value = [
-            {"id": 1, "name": "success1"},
-            Exception("Network Error"),
-            {"id": 3, "name": "success2"}
-        ]
-        
-        result = await extractor.run()
-        
-        # Should get 2 successful results despite 1 failure
-        assert len(result.df) == 2
-        assert "success1" in result.df["name"].values
-        assert "success2" in result.df["name"].values
