@@ -4,7 +4,6 @@ from typing import Union, List, Literal
 from morningpy.extractor.timeseries import *
 from morningpy.core.interchange import DataFrameInterchange
 
-
 def get_intraday_timeseries(
     ticker: str = None, 
     isin: str = None, 

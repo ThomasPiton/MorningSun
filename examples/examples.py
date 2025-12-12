@@ -7,8 +7,7 @@ from morningpy.api.market import (
     get_market_currencies,
     get_market_movers,
     get_market_indexes,
-    get_market_fair_value,
-    get_market_info
+    get_market_fair_value
 )
 
 from morningpy.api.security import (
@@ -32,7 +31,6 @@ def run():
     get_market_movers(mover_type=["gainers", "losers", "actives"])
     get_market_indexes(index_type="americas")
     get_market_fair_value(value_type="overvaluated")
-    get_market_info(info_type="commodities")
     get_headline_news(market="Spain",news="economy",edition="Central Europe")
     get_financial_statement(
         statement_type="Income Statement",

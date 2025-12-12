@@ -32,8 +32,13 @@ class IntradayTimeseriesConfig:
         "60min":60,
     }
     
-    RENAME_COLUMNS = {
-        "previousClose":"previous_close",
+    FIELD_MAPPING = {
+        "date":"date",
+        "open":"open",
+        "high":"high",
+        "low":"low",
+        "close":"close",
+        "volume":"volume",
     }
     
     STRING_COLUMNS = [       
@@ -79,8 +84,14 @@ class HistoricalTimeseriesConfig:
         "monthly":"m",
     }
     
-    RENAME_COLUMNS = {
-        "previousClose": "previous_close",
+    FIELD_MAPPING = {
+        "date":"date",
+        "open":"open",
+        "high":"high",
+        "low":"low",
+        "close":"close",
+        "volume":"volume",
+        "previous_close":"previousClose"
     }
     
     STRING_COLUMNS = [       

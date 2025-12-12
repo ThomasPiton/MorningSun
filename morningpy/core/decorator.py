@@ -5,7 +5,7 @@ import logging
 from functools import wraps
 from pathlib import Path
 import json
-from morningpy.core.config import EXTRACTOR_CLASS_FUNC
+from morningpy.core.config import CoreConfig
 
 def retry(
     max_retries: int = 3,
@@ -117,7 +117,7 @@ def save_api_response(activate: bool = False):
             if responses:
                 res = responses[0]
                 cls_name = self.__class__.__name__
-                func_name = EXTRACTOR_CLASS_FUNC[cls_name]
+                func_name = CoreConfig.EXTRACTOR_CLASS_FUNC[cls_name]
                 try:
                     file_path = fixture_dir / f"{func_name}_response.json"
                     with open(file_path, "w", encoding="utf-8") as f:
@@ -155,7 +155,7 @@ def save_dataframe_mock(activate: bool = False):
             if df is not None and not df.empty:
                 try:
                     cls_name = self.__class__.__name__
-                    func_name = EXTRACTOR_CLASS_FUNC[cls_name]
+                    func_name = CoreConfig.EXTRACTOR_CLASS_FUNC[cls_name]
                     file_path = mock_dir / f"{func_name}_mock.csv"
                     df.head(5).to_csv(file_path, index=False)
                 except Exception as e:
@@ -188,7 +188,7 @@ def save_api_request(activate: bool = False):
 
             try:
                 cls_name = self.__class__.__name__
-                func_name = EXTRACTOR_CLASS_FUNC[cls_name]
+                func_name = CoreConfig.EXTRACTOR_CLASS_FUNC[cls_name]
                 file_path = request_dir / f"{func_name}_request.json"
 
                 request_payload = {

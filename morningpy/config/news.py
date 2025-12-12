@@ -11,6 +11,17 @@ class HeadlineNewsConfig:
         "sectionFallBack":""
     }
     
+    COLUMNS = [
+        'news', 
+        'market', 
+        'display_date', 
+        'title', 
+        'subtitle', 
+        'tags', 
+        'link', 
+        'language'
+    ]
+    
     MARKET_ID = {
         "All Europe": "eu",
         "Asia": "ea",

@@ -3,7 +3,7 @@ from typing import Literal
 
 from morningpy.extractor.news import *
 from morningpy.core.interchange import DataFrameInterchange
-
+from typing import Literal
 
 def get_headline_news(
     edition: Literal[

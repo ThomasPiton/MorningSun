@@ -5,20 +5,25 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from enum import Enum
 from typing import Dict, Optional, Any
-import brotli
 
-from .config import DEFAULT_HEADERS, URLS
+from .config import CoreConfig
 from .cache import Cache
 
 
 class AuthType(Enum):
     """
     Authentication types supported by the Morningstar API.
-
-    - API_KEY: Standard Apigee API key
-    - BEARER_TOKEN: MAAS bearer token
-    - WAF_TOKEN: AWS WAF browser token (requires Selenium)
-    - NONE: No authentication required
+    
+    Attributes
+    ----------
+    API_KEY : str
+        Standard Apigee API key authentication
+    BEARER_TOKEN : str
+        MAAS bearer token authentication
+    WAF_TOKEN : str
+        AWS WAF browser token (requires Selenium)
+    NONE : str
+        No authentication required
     """
     API_KEY = "apikey"
     BEARER_TOKEN = "bearer"
@@ -28,16 +33,32 @@ class AuthType(Enum):
 
 class AuthManager:
     """
-    Handles authentication for all Morningstar API interactions.
-
-    Responsibilities:
-    - Retrieve and cache API keys (API key, MAAS token, WAF token)
-    - Fallback to persisted cache if live retrieval fails
-    - Provide properly authenticated headers based on AuthType
+    Manages authentication for Morningstar API interactions.
+    
+    Handles retrieval, caching, and refresh of various authentication tokens
+    including API keys, MAAS bearer tokens, and AWS WAF tokens. Implements
+    a fallback strategy using persistent cache when live retrieval fails.
+    
+    Attributes
+    ----------
+    cache : Cache
+        Persistent cache for storing tokens between sessions
+    
+    Notes
+    -----
+    - Tokens are cached both in-memory and persistently
+    - Automatic fallback to cached values on retrieval failure
+    - Supports forced refresh for all token types
     """
 
     def __init__(self):
-        self._headers = DEFAULT_HEADERS
+        """
+        Initialize the AuthManager with default configuration.
+        
+        Sets up headers, URLs, and initializes token storage and cache.
+        """
+        self._headers = CoreConfig.DEFAULT_HEADERS
+        self._urls = CoreConfig.URLS
         self._maas_token: Optional[str] = None
         self._api_key: Optional[str] = None
         self._token_real_time: Optional[str] = None
@@ -46,30 +67,39 @@ class AuthManager:
 
     def get_maas_token(self, force_refresh: bool = False) -> str:
         """
-        Retrieve the MAAS bearer token.
-
+        Retrieve the MAAS bearer token with intelligent caching.
+        
         Strategy:
-        1. Use in-memory token unless force_refresh=True
-        2. Attempt live HTTP retrieval
-        3. Fallback to cached token if server returns empty
-        4. Raise if no valid token is available
-
+        1. Return in-memory token unless force_refresh=True
+        2. Attempt live HTTP retrieval from endpoint
+        3. Fallback to persistent cache if server returns empty
+        4. Raise ValueError if no valid token available
+        
         Parameters
         ----------
-        force_refresh : bool
-            If True, forces retrieval from the live endpoint.
-
+        force_refresh : bool, default=False
+            If True, bypasses in-memory cache and forces live retrieval
+        
         Returns
         -------
         str
-            The MAAS bearer token.
+            Valid MAAS bearer token
+        
+        Raises
+        ------
+        ValueError
+            If token cannot be retrieved and no cached value exists
+        
+        Notes
+        -----
+        Successfully retrieved tokens are cached both in-memory and persistently
         """
         cached = self.cache.get("maas_token")
 
         if self._maas_token and not force_refresh:
             return self._maas_token
 
-        url = URLS["maas_token"]
+        url = self._urls["maas_token"]
         try:
             response = self._fetch_url(url)
             token = response.text.strip()
@@ -88,29 +118,38 @@ class AuthManager:
 
     def get_api_key(self, force_refresh: bool = False) -> str:
         """
-        Retrieve the Apigee API key.
-
-        Extracts the token from a JavaScript snippet:
+        Retrieve the Apigee API key by parsing JavaScript content.
+        
+        Extracts the API key from JavaScript using pattern:
             keyApigee: "XXXX"
-
-        Falls back to cached value on failure.
-
+        
         Parameters
         ----------
-        force_refresh : bool
-            If True, forces live retrieval.
-
+        force_refresh : bool, default=False
+            If True, bypasses in-memory cache and forces live retrieval
+        
         Returns
         -------
         str
-            The Morningstar API key.
+            Valid Morningstar Apigee API key
+        
+        Raises
+        ------
+        ValueError
+            If API key cannot be extracted and no cached value exists
+        
+        Notes
+        -----
+        - Parses JavaScript content using regex pattern matching
+        - Falls back to cached value on extraction failure
+        - Successfully retrieved keys are cached persistently
         """
-
         cached = self.cache.get("apikey")
+        
         if self._api_key and not force_refresh:
             return self._api_key
 
-        url = URLS["key_api"]
+        url = self._urls["key_api"]
 
         try:
             resp = self._fetch_url(url)
@@ -135,24 +174,36 @@ class AuthManager:
 
     def get_token_real_time(self, force_refresh: bool = False) -> str:
         """
-        Retrieve the real-time data token (tokenRealtime).
-
-        Extracts from JS payload:
+        Retrieve the real-time data token from JavaScript payload.
+        
+        Extracts token from JavaScript using pattern:
             tokenRealtime: "XXXX"
-
-        Uses cache if the token cannot be retrieved.
-
+        
+        Parameters
+        ----------
+        force_refresh : bool, default=False
+            If True, bypasses in-memory cache and forces live retrieval
+        
         Returns
         -------
         str
-            The real-time token.
+            Valid real-time data token
+        
+        Raises
+        ------
+        ValueError
+            If token cannot be extracted and no cached value exists
+        
+        Notes
+        -----
+        Uses same endpoint as API key but extracts different token field
         """
         cached = self.cache.get("token_real_time")
 
         if self._token_real_time and not force_refresh:
             return self._token_real_time
 
-        url = URLS["key_api"]
+        url = self._urls["key_api"]
         try:
             response = self._fetch_url(url)
             match = re.search(r'tokenRealtime\s*[:=]\s*"([^"]+)"', response.text)
@@ -174,27 +225,39 @@ class AuthManager:
         self,
         url: str = "https://www.morningstar.com/markets/calendar",
         force_refresh: bool = False
-    ) -> Optional[str]:
+    ) -> str:
         """
-        Retrieve AWS WAF token using a Selenium-driven Chrome session.
-
+        Retrieve AWS WAF token using headless Chrome browser automation.
+        
         Strategy:
-        1. Load page headlessly
-        2. Extract all cookies
-        3. Identify a cookie whose name contains "waf" or "token"
-        4. Fallback to cache on failure
-
+        1. Launch headless Chrome with anti-detection measures
+        2. Load target page to trigger WAF token generation
+        3. Extract cookies and identify WAF token cookie
+        4. Fallback to persistent cache on failure
+        
         Parameters
         ----------
-        url : str
-            Target webpage to trigger WAF token generation.
-        force_refresh : bool
-            Whether to ignore in-memory and force Selenium extraction.
-
+        url : str, default="https://www.morningstar.com/markets/calendar"
+            Target webpage URL to trigger WAF token generation
+        force_refresh : bool, default=False
+            If True, bypasses in-memory cache and launches browser
+        
         Returns
         -------
-        Optional[str]
-            The extracted WAF token.
+        str
+            Valid AWS WAF token extracted from browser cookies
+        
+        Raises
+        ------
+        ValueError
+            If token cannot be extracted and no cached value exists
+        
+        Notes
+        -----
+        - Requires ChromeDriver to be installed and accessible
+        - Uses headless mode to avoid opening visible browser window
+        - Searches for cookies containing 'waf' or 'token' in name
+        - Browser cleanup handled in finally block
         """
         cached = self.cache.get("waf_token")
 
@@ -251,39 +314,69 @@ class AuthManager:
 
     def _fetch_url(self, url: str) -> requests.Response:
         """
-        Perform a GET request with default headers and error handling.
-
+        Perform authenticated GET request with error handling.
+        
+        Parameters
+        ----------
+        url : str
+            Target URL to fetch
+        
         Returns
         -------
         requests.Response
-            The validated HTTP response.
-
+            Validated HTTP response object
+        
         Raises
         ------
         requests.HTTPError
-            When the response status is not 200.
+            If response status code is not 2xx
+        requests.Timeout
+            If request exceeds 20 second timeout
+        
+        Notes
+        -----
+        Uses default headers from CONFIG and 20 second timeout
         """
         response = requests.get(url, headers=self._headers, timeout=20)
         response.raise_for_status()
         return response
 
-    def get_headers(self, auth_type: AuthType, url: str = None) -> Dict[str, Any]:
+    def get_headers(
+        self, 
+        auth_type: AuthType, 
+        url: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
-        Build headers required for a specific API authentication method.
-
+        Build HTTP headers with appropriate authentication for API requests.
+        
         Parameters
         ----------
         auth_type : AuthType
-            Determines which token is injected into the headers.
+            Type of authentication to apply (API_KEY, BEARER_TOKEN, WAF_TOKEN, or NONE)
         url : str, optional
-            URL needed to obtain some tokens (e.g., WAF token).
-
+            URL required for WAF token generation (only used when auth_type is WAF_TOKEN)
+        
         Returns
         -------
         Dict[str, Any]
-            The full headers dict, including authentication fields.
+            Complete headers dictionary with authentication fields injected
+        
+        Notes
+        -----
+        - Starts with default headers from CONFIG
+        - Injects auth-specific fields based on auth_type:
+            - API_KEY: Adds 'Apikey' header
+            - BEARER_TOKEN: Adds 'authorization' header with Bearer prefix
+            - WAF_TOKEN: Adds 'x-aws-waf-token' header
+            - NONE: Returns default headers unchanged
+        
+        Examples
+        --------
+        >>> auth_mgr = AuthManager()
+        >>> headers = auth_mgr.get_headers(AuthType.API_KEY)
+        >>> headers = auth_mgr.get_headers(AuthType.WAF_TOKEN, url="https://example.com")
         """
-        headers = DEFAULT_HEADERS.copy()
+        headers = self._headers.copy()
 
         if auth_type == AuthType.API_KEY:
             headers["Apikey"] = self.get_api_key()

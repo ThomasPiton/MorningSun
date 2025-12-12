@@ -7,27 +7,28 @@ from morningpy.api.timeseries import (
 )
 
 def run():
-    # Intraday data
+    
     intraday = get_intraday_timeseries(
-        security_id=["0P00009WL3"],
-        start_date="2024-11-08",
-        end_date="2025-11-07",
-        frequency="1min",
+        security_id=["0P0000OQN8"],
+        start_date="2025-01-01",
+        end_date="2025-12-11",
+        frequency="10min",
         pre_after=False
-    )
+    ).to_pandas_dataframe()
     print("Intraday Timeseries:")
     print(intraday.head())
 
-    # Historical daily data
     historical = get_historical_timeseries(
         security_id=["0P0000OQN8","0P0001RWKZ"],
         start_date="2010-11-05",
         end_date="2025-11-05",
         frequency="daily",
         pre_after=False
-    )
+    ).to_pandas_dataframe()
     print("\nHistorical Timeseries:")
     print(historical.head())
 
+    return "Correctly extracted !"
+    
 if __name__ == "__main__":
-    run()
+    print(run())

@@ -3,7 +3,6 @@ from typing import List, Union, Literal
 
 from morningpy.extractor.market import (
     MarketCalendarUsInfoExtractor,
-    MarketExtractor,
     MarketIndexesExtractor,
     MarketFairValueExtractor,
     MarketMoversExtractor,
@@ -33,39 +32,6 @@ def get_market_us_calendar_info(
         Structured market calendar information.
     """
     extractor = MarketCalendarUsInfoExtractor(date=date, info_type=info_type)
-    return asyncio.run(extractor.run())
-
-
-def get_market_info(
-    info_type: Union[
-        Literal[
-            "commodities", "currencies", "global_barometer",
-            "global_indexes", "market_news", "sectors",
-            "topics", "us_barometer", "valuation_chart"
-        ],
-        List[
-            Literal[
-                "commodities", "currencies", "global_barometer",
-                "global_indexes", "market_news", "sectors",
-                "topics", "us_barometer", "valuation_chart"
-            ]
-        ]
-    ]
-) -> DataFrameInterchange:
-    """
-    Retrieve global market overview metrics.
-
-    Parameters
-    ----------
-    info_type : str or list of str
-        Types of market information to retrieve.
-
-    Returns
-    -------
-    DataFrameInterchange
-        Global market overview dataset.
-    """
-    extractor = MarketExtractor(info_type=info_type)
     return asyncio.run(extractor.run())
 
 

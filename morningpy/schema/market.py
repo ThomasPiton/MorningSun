@@ -5,7 +5,7 @@ from morningpy.core.dataframe_schema import DataFrameSchema
     
 @dataclass
 class MarketCalendarUsInfoSchema(DataFrameSchema):
-    name: str = None
+    name: Optional[str] = None
     
 @dataclass
 class MarketFairValueSchema(DataFrameSchema):
@@ -60,10 +60,6 @@ class MarketIndexesSchema(DataFrameSchema):
     ask_price: Optional[float] = None
     net_change: Optional[float] = None
     percent_net_change: Optional[float] = None
-    
-@dataclass
-class MarketSchema(DataFrameSchema):
-    name: str = None
     
 @dataclass
 class MarketMoversSchema(DataFrameSchema):

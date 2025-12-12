@@ -1,7 +1,6 @@
 from .market import (
     MarketCalendarUsInfoConfig,
     MarketCommoditiesConfig,
-    MarketConfig,
     MarketCurrenciesConfig,
     MarketFairValueConfig,
     MarketIndexesConfig,
@@ -23,7 +22,6 @@ from .ticker import TickerConfig
 __all__ = [
   "MarketCalendarUsInfoConfig",
   "MarketCommoditiesConfig",
-  "MarketConfig",
   "MarketCurrenciesConfig",
   "MarketFairValueConfig",
   "MarketIndexesConfig",

@@ -5,7 +5,17 @@ from morningpy.core.dataframe_schema import DataFrameSchema
 
 @dataclass
 class FinancialStatementSchema(DataFrameSchema):
+    security_id: Optional[str] = None
+    security_label: Optional[str] = None
     statement_type: Optional[str] = None
+    sub_type1: Optional[str] = None
+    sub_type2: Optional[str] = None
+    sub_type3: Optional[str] = None
+    sub_type4: Optional[str] = None
+    sub_type5: Optional[str] = None
+    sub_type6: Optional[str] = None
+    sub_type7: Optional[str] = None
+    sub_type8: Optional[str] = None
 
 @dataclass
 class HoldingSchema(DataFrameSchema):

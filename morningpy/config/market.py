@@ -20,13 +20,69 @@ class MarketCalendarUsInfoConfig:
         "splits"
     }
     
-    RENAME_COLUMNS = {
-        "":"",
+    FIELD_MAPPING = {
+        "base":{
+            "calendar_date":"date",
+            "updated_at":"updatedAt",
+            "vendor":"vendor",
+            "type":"type",
+            "calendar":"calendar",
+            "vendor_id":"vendorId",
+        },
+        "earnings":{
+            "security_id":"securityID",
+            "ticker":"ticker",
+            "name":"name",
+            "exchange":"exchange",
+            "market_cap":"market_cap",
+            "isin":"isin",
+            "exchange_country":"exchangeCountry",
+            "quarter_end_date":"quarterEndDate",
+            "actual_diluted_eps":"actualDilutedEps",
+            "net_income":"netIncome",
+            "consensus_estimate":"consensusEstimate",
+            "percentage_surprise":"percentageSurprise",
+            "quarterly_sales":"quarterlySales"
+        }, 
+        "economic-releases":{
+            "release":"release",
+            "period":"period",
+            "release_time":"releaseTime",
+            "consensus_estimate":"consensusEstimate",
+            "briefing_estimate":"briefingEstimate",
+            "after_release_actual":"afterReleaseActual",
+            "prior_release_actual":"priorReleaseActual"
+        }, 
+        "ipos":{
+            "security_id":"securityID",
+            "ticker":"ticker",
+            "name":"name",
+            "exchange":"exchange",
+            "market_cap":"marketCap",
+            "share_value":"shareValue",
+            "opened_share_value":"openedShareValue",
+            "lead_underwriter":"leadUnderWriter",
+            "initial_shares":"initialShares",
+            "initial_low_range":"initialLowRange",
+            "initial_high_range":"initialHighRange",
+            "date_priced":"datePriced",
+            "week_priced":"weekPriced",
+            "company_description":"description",
+        }, 
+        "splits":{
+            "security_id":"securityID",
+            "ticker":"ticker",
+            "name":"name",
+            "exchange":"exchange",
+            "market_cap":"marketCap",
+            "share_worth":"shareWorth",
+            "old_share_worth":"oldShareWorth",
+            "ex_date":"exDate",
+            "announce_date":"announceDate",
+            "payable_date":"payableDate"
+        }
     }
     
-    FINAL_COLUMNS = [
-        "",
-    ]
     
     
 class MarketFairValueConfig:
@@ -183,74 +239,6 @@ class MarketIndexesConfig:
     FINAL_COLUMNS = STRING_COLUMNS + NUMERIC_COLUMNS
 
 
-class MarketConfig:
-    
-    REQUIRED_AUTH: AuthType = AuthType.WAF_TOKEN
-    
-    PAGE_URL = "https://www.morningstar.com/markets"
-    
-    API_URL = "https://www.morningstar.com/api/v2/markets"
-    
-    VALID_INPUTS = {
-        "commodities", 
-        "currencies", 
-        "global_barometer",
-        "global_indexes",
-        "market_news",
-        "sectors",
-        "topics",
-        "us_barometer",
-        "valuation_chart"
-    }
-    
-    MAPPING_INPUTS = {
-        "commodities": "commodities",
-        "currencies": "currencies",
-        "global_barometer": "globalBarometer",
-        "global_indexes": "globalIndexes",
-        "market_news": "marketNews",
-        "sectors": "sectors",
-        "topics": "topics",
-        "us_barometer": "usBarometer",
-        "valuation_chart": "valuationChart"
-    }
-    
-    RENAME_COLUMNS = {
-        "securityID":"security_id",
-        "performanceID":"performance_id",
-        "fundID":"fund_id",
-        "masterPortfolioID":"master_portfolio_id",
-        "exchangeCountry":"exchange_country",
-        "priceToFairValue":"price_to_fair_value"
-    }
-    
-    STRING_COLUMNS = [        
-        "category",
-        "security_id",
-        "ticker",
-        "name",
-        "fund_id",
-        "performance_id",
-        "master_portfolio_id",
-        "exchange",
-        "exchange_country",
-        "country_code"
-    ]
-    
-    NUMERIC_COLUMNS = [
-       "price_to_fair_value",
-       "returns_1d",
-       "returns_1m",
-       "returns_3m",
-       "returns_1y",
-       "returns_3y",
-       "returns_5y",
-       "returns_10y"
-    ]
-    
-    FINAL_COLUMNS = STRING_COLUMNS + NUMERIC_COLUMNS
-    
-    
 class MarketMoversConfig:
     
     REQUIRED_AUTH: AuthType = AuthType.WAF_TOKEN
@@ -266,7 +254,6 @@ class MarketMoversConfig:
     }
     
     RENAME_COLUMNS = {
-        "postMarketNetChange":"post_market_net_change",
         "preMarketNetChange":"pre_market_net_change",
         "openPrice":"open_price",
         "tradingStatus":"trading_status",
@@ -284,12 +271,11 @@ class MarketMoversConfig:
         "bidPrice":"bid_price",
         "bidPrice_size":"bid_price_size",
         "previousClosePrice":"previous_close_price",
-        "postMarketPrice":"post_market_price",
         "performanceID":"performance_id",
         "averageVolume":"avg_volume",
         "listedCurrency":"currency",
         "yearHighPrice":"year_high_price",
-        "lastPrice":"last_price"
+        "lastPrice":"last_price",
     }
     
     STRING_COLUMNS = [        
@@ -315,14 +301,12 @@ class MarketMoversConfig:
         "year_low_price",
         "adjusted_close_price",
         "previous_close_price",
-        "post_market_price",
         "pre_market_price",
         "bid_price",
         "bid_price_size",
         "ask_price",
         "ask_price_size",
         "percent_net_change",
-        "post_market_net_change",
         "pre_market_net_change",
     ]
     

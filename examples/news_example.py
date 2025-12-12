@@ -10,8 +10,11 @@ def run():
         news="economy",
         edition="Central Europe"
     )
+    
     print("Headline News:")
     print(news.head())
-
+    
+    return "Correctly extracted !"
+    
 if __name__ == "__main__":
-    run()
+    print(run())

@@ -1,8 +1,13 @@
 from typing import Literal
 
 class TickerConfig:
+    
+    IdLiteral = Literal["ticker", "isin", "performance_id", "security_id"]
+    
     SecurityTypeLiteral = Literal["fund", "index", "etf", "stock"]
-    BooleanLitarel = Literal[True, False]
+    
+    BooleanLiteral = Literal[True, False]
+    
     CountryLiteral = Literal[
         "United States", "United Kingdom", "Canada", "Australia", "Japan", "Germany",
         "France", "Switzerland", "Netherlands", "Sweden", "Norway", "Denmark",
