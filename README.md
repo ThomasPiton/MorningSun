@@ -44,7 +44,6 @@ pip install -e morningpy
 ```python
 
 # All modules
-
 from morningpy import(
     get_market_us_calendar_info,
     get_market_commodities,
