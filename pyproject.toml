@@ -55,3 +55,4 @@ morningpy = ["data/*.parquet", "data/*.json"]
 version_scheme = "post-release"
 local_scheme = "no-local-version"
 write_to = "morningpy/_version.py"
+
