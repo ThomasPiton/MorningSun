@@ -7,6 +7,7 @@ from pathlib import Path
 import json
 from morningpy.core.config import CoreConfig
 
+
 def retry(
     max_retries: int = 3,
     backoff_factor: float = 2,

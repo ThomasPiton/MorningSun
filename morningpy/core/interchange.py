@@ -4,6 +4,7 @@ import dask.dataframe as dd
 import modin.pandas as mpd
 import pyarrow as pa
 
+
 class DataFrameInterchange(pd.DataFrame):
     """
     Pandas-compatible DataFrame with convenient conversion methods to multiple

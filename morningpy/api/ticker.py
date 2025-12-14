@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import Optional, Literal,Union,List
+from typing import Optional,Union,List
 
 from morningpy.extractor.ticker import TickerExtractor
 from morningpy.config.ticker import TickerConfig

@@ -1,4 +1,4 @@
-from .api.market import (
+from morningpy.api.market import (
     get_market_us_calendar_info,
     get_market_commodities,
     get_market_currencies,
@@ -7,21 +7,23 @@ from .api.market import (
     get_market_fair_value
 )
 
-from .api.news import (
-    get_headline_news,
+from morningpy.api.news import (
+    get_headline_news
 )
 
-from .api.security import (
+from morningpy.api.security import (
     get_financial_statement,
     get_holding,
     get_holding_info,
 )
 
-from .api.ticker import (
-    convert
+from morningpy.api.ticker import (
+    search_tickers,
+    convert,
+    batch_convert
 )
 
-from .api.timeseries import (
+from morningpy.api.timeseries import (
     get_historical_timeseries,
     get_intraday_timeseries,
 )
@@ -43,11 +45,9 @@ __all__ = [
     "get_financial_statement",
     "get_holding",
     "get_holding_info",
-    "get_all_etfs",
-    "get_all_funds",
-    "get_all_securities",
-    "get_all_stocks",
+    "search_tickers",
     "convert",
+    "batch_convert",
     "get_historical_timeseries",
     "get_intraday_timeseries",
 ]

@@ -7,6 +7,7 @@ from morningpy.core.decorator import save_dataframe_mock,save_api_response,save_
 from morningpy.core.interchange import DataFrameInterchange
 from morningpy.core.config import CoreConfig
 
+
 class BaseExtractor(ABC):
     """
     Abstract base class for asynchronous data extractors.

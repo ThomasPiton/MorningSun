@@ -6,7 +6,7 @@
 |----------|--------|
 | Testing / CI | [![Tests](https://github.com/ThomasPiton/morningpy/actions/workflows/tests.yml/badge.svg)](https://github.com/ThomasPiton/morningpy/actions) [![Codecov](https://codecov.io/gh/ThomasPiton/morningpy/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/ThomasPiton/morningpy) |
 | Package | [![PyPI](https://img.shields.io/pypi/v/morningpy.svg)](https://pypi.org/project/morningpy/) [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/) |
-| Meta | [![Docs](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://ThomasPiton.github.io/morningpy/) [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ThomasPiton/morningpy/blob/main/LICENSE)  [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)|
+| Meta | [![Docs](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://ThomasPiton.github.io/morningpy/) [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ThomasPiton/morningpy/blob/main/LICENSE) [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)|
 
 ## Overview
 
@@ -28,13 +28,11 @@ MorningPy enables professional-grade data handling and covers a wide range of fi
 ## Installation
 
 Install from PyPI:
-
 ```bash
 pip install morningpy
 ```
 
 Install from source:
-
 ```bash
 git clone https://github.com/ThomasPiton/morningpy.git
 pip install -e morningpy
@@ -42,8 +40,7 @@ pip install -e morningpy
 
 ## Usage
 
-Importing modules:
-
+### Importing Modules
 ```python
 # Market data
 from morningpy.api.market import (
@@ -53,7 +50,6 @@ from morningpy.api.market import (
     get_market_movers,
     get_market_indexes,
     get_market_fair_value,
-    get_market_info
 )
 
 # Timeseries data
@@ -71,19 +67,18 @@ from morningpy.api.security import (
 
 # Ticker info
 from morningpy.api.ticker import (
-    get_all_etfs,
-    get_all_funds,
-    get_all_stocks,
-    get_all_securities,
-    convert
+    search_tickers,
+    convert,
+    batch_convert,
 )
 
 # News
 from morningpy.api.news import get_headline_news
 ```
 
-Examples - Market Information: 
+### Examples
 
+#### Market Information
 ```python
 from morningpy.api.market import (
     get_market_us_calendar_info,
@@ -111,11 +106,10 @@ indexes = get_market_indexes(index_type=["americas", "us"])
 fair_value = get_market_fair_value(value_type=["overvaluated", "undervaluated"])
 
 # General market info
-market_info = get_market_info(info_type=["global_barometer","commodities"])
+market_info = get_market_info(info_type=["global_barometer", "commodities"])
 ```
 
-Examples - Timeseries: 
-
+#### Timeseries
 ```python
 from morningpy.api.timeseries import (
     get_intraday_timeseries,
@@ -133,7 +127,7 @@ intraday = get_intraday_timeseries(
 
 # Historical daily data
 historical = get_historical_timeseries(
-    security_id=["0P0000OQN8","0P0001RWKZ"],
+    security_id=["0P0000OQN8", "0P0001RWKZ"],
     start_date="2010-11-05",
     end_date="2025-11-05",
     frequency="daily",
@@ -141,8 +135,7 @@ historical = get_historical_timeseries(
 )
 ```
 
-Examples - Security: 
-
+#### Security
 ```python
 from morningpy.api.security import (
     get_financial_statement,
@@ -166,30 +159,46 @@ holding = get_holding(
 )
 ```
 
-Examples - Ticker: 
-
+#### Ticker
 ```python
 from morningpy.api.ticker import (
-    get_all_etfs,
-    get_all_funds,
-    get_all_stocks,
-    get_all_securities,
-    convert
+    search_tickers,
+    convert,
+    batch_convert,
 )
 
-# Retrieve all ETFs
-etfs = get_all_etfs()
+# Retrieve US stock tickers
+us_stock_tickers = search_tickers(security_type="stock", country_id="USA", exact_match=True)
 
-# Retrieve all stocks and funds
-stocks = get_all_stocks()
-funds = get_all_funds()
+# Search for specific tickers
+tech_tickers = search_tickers(ticker=["AAPL", "MSFT", "GOOGL"])
 
-# Convert ticker or ISIN
-converted = convert(["US7181721090", "0P0001PU03"])
+# Search for active ETFs in technology sector
+tech_etf = search_tickers(
+    security_type="etf",
+    sector="Technology",
+    is_active=True
+)
+
+# Search by security label
+tech_label_security = search_tickers(
+    security_label="Technology",  # Finds all securities with "Technology" in name
+    exact_match=False
+)
+
+# Batch conversion
+sec_batch = batch_convert(
+    ["AAPL", "MSFT", "GOOGL", "AMZN"], 
+    from_field="ticker", 
+    to_field="isin"
+)
+
+# Single conversion
+isin = convert(performance_id="0P0001PU03", convert_to="isin")
+security_id = convert(isin="US0378331005", convert_to="security_id")
 ```
 
-Examples - News: 
-
+#### News
 ```python
 from morningpy.api.news import get_headline_news
 
@@ -202,15 +211,21 @@ news = get_headline_news(
 print(news.head())
 ```
 
-
 ## Documentation
 
-Advanced documentation will be available at MorningPy Docs
+Advanced documentation is available at [Documentation](https://thomaspiton.github.io/morningpy/) 
 
-## Contribution
+## Legal
 
-Contributions are always welcome!
-You can:
-- Open an issue to discuss a feature or bug
-- Submit a pull request
-- Contact us to discuss the best way to contribute
+MorningPy is distributed under the MIT License. See the [LICENSE](https://github.com/ThomasPiton/morningpy/blob/main/LICENSE) file for details.
+
+MorningPy is not affiliated with, endorsed by, or vetted by Morningstar, Inc. It's an open-source tool that uses Morningstar's publicly available APIs, and is intended for research and educational purposes. Users should refer to Morningstar's terms of use for details on their rights to use the actual data downloaded.
+
+## Contributing
+
+Contributions are always welcome! Please see our [Code of Conduct](CODE_OF_CONDUCT.md) and contributing guidelines for details on how to participate in this project.
+
+## Support
+
+- [Documentation](https://thomaspiton.github.io/morningpy/)
+- [Issue Tracker](https://github.com/ThomasPiton/morningpy/issues)
