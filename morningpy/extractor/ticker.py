@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import Optional, Literal, Union, List, Dict, Any
 from functools import lru_cache
-
+from pathlib import Path
 
 class TickerExtractor:
     """
@@ -51,12 +51,29 @@ class TickerExtractor:
         pd.DataFrame
             DataFrame containing all ticker data.
 
+        Raises
+        ------
+        FileNotFoundError
+            If tickers.parquet cannot be found in any expected location.
+
         Notes
         -----
         Uses functools.lru_cache to memoize the result. The cache can be
         cleared using TickerExtractor.clear_cache() if the underlying file changes.
+        
+        Automatically detects library vs dev mode installation:
+        - First tries: {module_dir}/data/tickers.parquet (library mode)
+        - Falls back to: morningpy/data/tickers.parquet (dev mode)
         """
-        return pd.read_parquet("morningpy/data/tickers.parquet")
+        try: 
+            module_dir = Path(__file__).parent
+            parquet_path = module_dir / "data" / "tickers.parquet"
+            tickers = pd.read_parquet(parquet_path)
+        except:
+            parquet_path = "morningpy/data/tickers.parquet"
+            tickers = pd.read_parquet(parquet_path)
+            
+        return tickers
 
     @classmethod
     def clear_cache(cls):

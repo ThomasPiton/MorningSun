@@ -8,6 +8,10 @@ from morningpy.api.ticker import (
 )
 
 def run():
+    
+    # APPL
+    appl_tickers = search_tickers()
+    
     # ETFs
     us_stock_tickers = search_tickers(security_type="stock", country_id="USA",exact_match=True)
 
